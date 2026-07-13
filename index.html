@@ -4,28 +4,28 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>吉隆天曜｜大寮鳳林商圈 · 美學2~3房・預約賞屋</title>
-<meta name="description" content="吉隆天曜——大寮鳳林商圈核心，在雙商圈與學府之間，收藏稀有雙棟純粹住區。接待中心：高雄市大寮區鳳林三路318之1號，預約專線 07-783-9189，立即線上預約賞屋。">
+<meta name="description" content="吉隆天曜——大寮鳳林商圈核心，在雙商圈與學府之間，收藏學府藝文與純粹尊榮住區。接待中心：高雄市大寮區鳳林三路318之1號，預約專線 07-783-9189，立即線上預約賞屋。">
 <meta name="keywords" content="吉隆天曜, 大寮新建案, 鳳林商圈, 大寮預售屋, 吉隆建設, 預約賞屋">
 <link rel="canonical" href="https://normalsky315-jpg.github.io/sky-radianc/">
 <meta property="og:title" content="吉隆天曜｜大寮鳳林商圈 · 美學2~3房">
-<meta property="og:description" content="學府 × 商圈 × 純粹尊榮。大寮鳳林商圈稀有雙棟住區，接待中心：大寮區鳳林三路318之1號。立即預約賞屋，專人與您聯繫。">
-<meta property="og:image" content="https://normalsky315-jpg.github.io/sky-radianc/images/jiulongtianyao-architecture-render.jpg">
+<meta property="og:description" content="學府 × 商圈 × 純粹尊榮。大寮鳳林商圈純粹尊榮住區，接待中心：大寮區鳳林三路318之1號。立即預約賞屋，專人與您聯繫。">
+<meta property="og:image" content="https://normalsky315-jpg.github.io/sky-radianc/images/jiulongtianyao-hero.jpg">
 <meta property="og:url" content="https://normalsky315-jpg.github.io/sky-radianc/">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="zh_TW">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="吉隆天曜｜大寮鳳林商圈 · 美學2~3房">
-<meta name="twitter:description" content="學府 × 商圈 × 純粹尊榮。大寮鳳林商圈稀有雙棟住區，預約賞屋。">
-<meta name="twitter:image" content="https://normalsky315-jpg.github.io/sky-radianc/images/jiulongtianyao-architecture-render.jpg">
+<meta name="twitter:description" content="學府 × 商圈 × 純粹尊榮。大寮鳳林商圈純粹尊榮住區，預約賞屋。">
+<meta name="twitter:image" content="https://normalsky315-jpg.github.io/sky-radianc/images/jiulongtianyao-hero.jpg">
 
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "RealEstateAgent",
   "name": "吉隆天曜",
-  "description": "大寮鳳林商圈稀有雙棟純粹住區",
+  "description": "大寮鳳林商圈學府藝文與純粹尊榮住區",
   "url": "https://normalsky315-jpg.github.io/sky-radianc/",
-  "image": "https://normalsky315-jpg.github.io/sky-radianc/images/jiulongtianyao-architecture-render.jpg",
+  "image": "https://normalsky315-jpg.github.io/sky-radianc/images/jiulongtianyao-hero.jpg",
   "telephone": "+886-7-783-9189",
   "address": {
     "@type": "PostalAddress",
@@ -36,7 +36,7 @@
 }
 </script>
 
-<link rel="preload" as="image" href="images/jiulongtianyao-architecture-render.jpg" fetchpriority="high">
+<link rel="preload" as="image" href="images/jiulongtianyao-hero.jpg" fetchpriority="high">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Noto+Sans+TC:wght@300;400;500&family=Noto+Serif+TC:wght@500;600;700&display=swap" rel="stylesheet">
@@ -85,32 +85,23 @@
   .nav__tel:hover{color:var(--gold)}
   @media(max-width:599px){.nav__tel{display:none}}
 
-  /* hero */
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+  /* hero — the source image already has the logo/tagline baked in, so this is
+     just the image plus a CTA button; no duplicate HTML text overlay */
   .hero{position:relative;min-height:100svh;display:flex;align-items:flex-end;overflow:hidden;background:linear-gradient(180deg,#0d2a4d 0%,#1a3f6e 55%,#0d2a4d 100%)}
-  /* source render is a single landscape 3D visual (no separate portrait crop available) —
-     use contain on narrow/tall viewports so both towers always stay fully visible instead
-     of being cropped down to a sliver, matching gradient backdrop hides the letterbox seam */
+  /* landscape source (no separate portrait crop) — use contain on narrow/tall
+     viewports so the full image always stays visible instead of being cropped
+     down to a sliver; matching gradient backdrop hides the letterbox seam */
   .hero__img{position:absolute;left:50%;top:50%;width:100%;height:100%;object-fit:contain;object-position:center;z-index:0;transform:translate(-50%,-50%) scale(1.08);animation:kenburns-contain 18s ease-out forwards}
   @keyframes kenburns-contain{to{transform:translate(-50%,-50%) scale(1)}}
   @keyframes kenburns-cover{to{transform:scale(1)}}
   @media(min-width:900px){.hero__img{object-fit:cover;left:0;top:0;transform:scale(1.08);animation-name:kenburns-cover}}
-  .hero__scrim{position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(8,26,48,.36) 0%,rgba(8,26,48,0) 30%,rgba(8,26,48,.05) 55%,rgba(8,26,48,.82) 100%)}
-  .hero__inner{position:relative;z-index:2;width:100%;max-width:var(--maxw);margin:0 auto;padding:0 24px 66px;color:#fff}
-  .hero .latin{color:rgba(255,255,255,.8)}
-  .hero__title{font-size:clamp(2.5rem,8.5vw,5rem);color:#fff;font-weight:600;text-shadow:0 2px 30px rgba(0,0,0,.4)}
-  .hero__sub{font-family:var(--serif);font-weight:500;font-size:clamp(1.05rem,3.4vw,1.5rem);letter-spacing:.22em;margin-top:14px;color:#fff}
-  .hero__desc{margin-top:20px;max-width:32ch;color:rgba(255,255,255,.92);font-size:1rem;line-height:1.9}
-  .hero__desc span{display:block}
-  .hero__cta{margin-top:30px}
+  .hero__inner{position:relative;z-index:2;width:100%;max-width:var(--maxw);margin:0 auto;padding:0 24px 66px;display:flex;justify-content:flex-start}
+  @media(min-width:900px){.hero__inner{padding-bottom:64px}}
   .hero__scroll{position:absolute;left:50%;bottom:22px;transform:translateX(-50%);z-index:2;color:rgba(255,255,255,.7);font-size:.62rem;letter-spacing:.3em;text-transform:uppercase;display:flex;flex-direction:column;align-items:center;gap:8px}
   .hero__scroll i{width:1px;height:34px;background:rgba(255,255,255,.5);display:block;animation:scrolldot 2.4s ease-in-out infinite}
   @keyframes scrolldot{0%,100%{opacity:.2;transform:scaleY(.4);transform-origin:top}50%{opacity:1;transform:scaleY(1)}}
-  @media(min-width:900px){
-    .hero{align-items:center}
-    .hero__scrim{background:linear-gradient(90deg,rgba(8,26,48,.6) 0%,rgba(8,26,48,.2) 38%,rgba(8,26,48,0) 62%),linear-gradient(180deg,rgba(8,26,48,.3),rgba(8,26,48,0) 40%,rgba(8,26,48,.3))}
-    .hero__inner{padding-bottom:0}
-    .hero__text{max-width:52%}
-  }
 
   /* generic */
   .section{padding:clamp(72px,11vw,140px) 0}
@@ -166,7 +157,7 @@
   @media(max-width:600px){.scene{grid-template-columns:1fr;gap:10px;padding:24px 2px}}
   .map__note{margin-top:18px;font-size:.78rem;color:var(--stone-deep);letter-spacing:.04em;text-align:center}
 
-  /* S5 architecture */
+  /* S5 academic & arts (reuses .arch styles) */
   .arch{position:relative;background:var(--char);color:#fff;overflow:hidden}
   .arch__media{position:absolute;inset:0;z-index:0}
   .arch__media img{width:100%;height:100%;object-fit:cover;object-position:center 40%}
@@ -199,8 +190,7 @@
 
   /* S6.5 about */
   .about{background:var(--cream)}
-  .about__grid{display:grid;grid-template-columns:1fr;gap:32px;margin-top:8px}
-  @media(min-width:900px){.about__grid{grid-template-columns:1.1fr 1fr;gap:72px;align-items:center}}
+  .about__story{max-width:64ch}
   .about__story .lede{margin-top:26px}
   .about__values{margin-top:26px;display:flex;flex-wrap:wrap;gap:10px}
   .about__values span{border:1px solid rgba(182,146,78,.45);color:var(--stone-deep);font-size:.85rem;letter-spacing:.2em;padding:7px 16px}
@@ -296,20 +286,10 @@
 
 <!-- HERO -->
 <header class="hero" id="top">
-  <img class="hero__img" fetchpriority="high" src="images/jiulongtianyao-architecture-render.jpg" alt="吉隆天曜雙棟建築3D外觀情境示意圖，雲海山景">
-  <div class="hero__scrim"></div>
+  <img class="hero__img" fetchpriority="high" src="images/jiulongtianyao-hero.jpg" alt="吉隆天曜 天光所至 曜影流轉 Sky Radiance，雙棟建築3D外觀情境示意圖，藍天雲海山景">
+  <h1 class="sr-only">吉隆天曜｜天光所至 曜影流轉</h1>
   <div class="hero__inner">
-    <div class="hero__text">
-      <p class="latin">Where Urban Prosperity Unfold</p>
-      <h1 class="hero__title">天光所至<br>曜影流轉</h1>
-      <p class="hero__sub">Sky Radiance</p>
-      <p class="hero__desc">
-        <span>大寮鳳林商圈核心</span>
-        <span>在雙商圈與學府之間</span>
-        <span>收藏稀有雙棟純粹住區</span>
-      </p>
-      <div class="hero__cta"><a class="btn btn--solid" href="#reserve" onclick="trackEvent('cta_click','hero')">立即預約賞屋</a></div>
-    </div>
+    <div class="hero__cta"><a class="btn btn--solid" href="#reserve" onclick="trackEvent('cta_click','hero')">立即預約賞屋</a></div>
   </div>
   <div class="hero__scroll" aria-hidden="true">Scroll<i></i></div>
 </header>
@@ -363,7 +343,7 @@
           <b>5/2</b><span>戶 / 電梯</span>
         </div>
         <h3><span class="latin">Noble</span>純粹尊榮</h3>
-        <ul><li>稀有雙棟規劃</li><li>剛剛好的105戶</li></ul>
+        <ul><li>邊間宅雙面採光</li><li>全面平面車位</li></ul>
       </article>
     </div>
   </div>
@@ -407,14 +387,14 @@
 </section>
 
 <!-- S5 -->
-<section class="arch" id="architecture">
-  <div class="arch__media"><img loading="lazy" decoding="async" src="images/jiulongtianyao-architecture-render.jpg" alt="吉隆天曜雙棟建築3D外觀情境示意圖"></div>
+<section class="arch" id="academic">
+  <div class="arch__media"><img loading="lazy" decoding="async" src="images/jiulongtianyao-fooyin-university.jpg" alt="輔英科技大學校門"></div>
   <div class="arch__copy">
-    <p class="eyebrow reveal">The Architecture</p>
-    <h2 class="reveal d1">稀有雙棟 · 105戶純粹住區</h2>
+    <p class="eyebrow reveal">Academic &amp; Arts</p>
+    <h2 class="reveal d1">學府匯聚 · 藝文薈萃</h2>
     <div class="rule rule--center reveal d1"></div>
-    <p class="lede reveal d2">剛剛好的105戶，精選尊貴好鄰，出入更單純。</p>
-    <div class="arch__cta reveal d3"><a class="btn btn--ghost-light" href="#reserve" onclick="trackEvent('cta_click','arch')">預約鑑賞建築之美</a></div>
+    <p class="lede reveal d2">永芳國小、大寮國中近距離，輔英科大、大東文化藝術中心相伴，濃厚人文學術氛圍，為生活加分。</p>
+    <div class="arch__cta reveal d3"><a class="btn btn--ghost-light" href="#reserve" onclick="trackEvent('cta_click','academic')">預約感受人文氛圍</a></div>
   </div>
 </section>
 
@@ -444,15 +424,10 @@
       <p class="eyebrow">About 吉隆建設</p>
       <h2>為您成家，是我們的榮幸</h2>
     </div>
-    <div class="about__grid">
-      <div class="about__story reveal d1">
-        <p class="lede">自1982年成立至今邁向第45年，吉隆建設深耕造就無數名宅傳奇，多次獲得大獎肯定，是眾多消費者心中首選的建築品牌。</p>
-        <div class="about__values">
-          <span>誠信</span><span>踏實</span><span>品質</span>
-        </div>
-      </div>
-      <div class="reveal d2">
-        <img loading="lazy" decoding="async" src="images/jiulongtianyao-floorplan-a1.jpg" alt="最好住的3房平面圖，特別推薦A1約34.46坪" style="border:1px solid var(--line)">
+    <div class="about__story reveal d1">
+      <p class="lede">自1982年成立至今邁向第45年，吉隆建設深耕造就無數名宅傳奇，多次獲得大獎肯定，是眾多消費者心中首選的建築品牌。</p>
+      <div class="about__values">
+        <span>誠信</span><span>踏實</span><span>品質</span>
       </div>
     </div>
   </div>
@@ -460,7 +435,7 @@
 
 <!-- S7 -->
 <section class="reserve" id="reserve">
-  <img loading="lazy" decoding="async" class="reserve__bg" src="images/jiulongtianyao-architecture-render.jpg" alt="吉隆天曜3D外觀情境示意圖">
+  <img loading="lazy" decoding="async" class="reserve__bg" src="images/jiulongtianyao-hero.jpg" alt="吉隆天曜3D外觀情境示意圖">
   <div class="reserve__scrim"></div>
   <div class="reserve__inner">
     <p class="eyebrow reveal">Reserve a Visit</p>
