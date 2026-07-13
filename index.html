@@ -114,7 +114,9 @@
   .feature__bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.06);transition:opacity 1.4s ease,transform 6s ease}
   .feature.in .feature__bg{opacity:1;transform:scale(1)}
   .feature__scrim{position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,26,48,.28),rgba(8,26,48,0) 40%,rgba(8,26,48,.74))}
+  .feature--noimg{min-height:0;align-items:center;padding:clamp(80px,12vw,140px) 0;background:linear-gradient(160deg,var(--char) 0%,var(--char-2) 100%)}
   .feature__inner{position:relative;z-index:2;max-width:var(--maxw);margin:0 auto;padding:0 24px 64px;width:100%}
+  .feature--noimg .feature__inner{padding-bottom:0}
   .feature h2{color:#fff;max-width:18ch}
   .feature .lede{color:rgba(255,255,255,.92);max-width:42ch}
   .feature .eyebrow{color:var(--gold-soft)}
@@ -294,10 +296,9 @@
   <div class="hero__scroll" aria-hidden="true">Scroll<i></i></div>
 </header>
 
-<!-- S2 -->
-<section class="feature" id="district" data-feature>
-  <img class="feature__bg" data-src="images/jiulongtianyao-cimu-lake.jpg" alt="大寮周邊人文景觀，湖畔綠意">
-  <div class="feature__scrim"></div>
+<!-- S2 (no photo — the only spare image was a Fooyin-specific scene, not a genuine
+     district-wide shot, and misrepresenting it as one would be misleading) -->
+<section class="feature feature--noimg" id="district">
   <div class="feature__inner">
     <p class="eyebrow reveal">The District</p>
     <h2 class="reveal d1">一座商圈<br>正在成熟</h2>
@@ -547,9 +548,6 @@
 
   const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.18,rootMargin:'0px 0px -8% 0px'});
   document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
-
-  const fio=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){const img=e.target.querySelector('.feature__bg');if(img&&img.dataset.src&&!img.src)img.src=img.dataset.src;e.target.classList.add('in');fio.unobserve(e.target)}})},{threshold:.15});
-  document.querySelectorAll('[data-feature]').forEach(el=>fio.observe(el));
 
   /* S3 carousel: 3s 淡入淡出，尊重 reduced-motion */
   const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
