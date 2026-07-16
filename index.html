@@ -121,6 +121,11 @@
   .tags{margin-top:30px;display:flex;flex-wrap:wrap;gap:10px 20px;font-size:.86rem;letter-spacing:.08em;color:rgba(255,255,255,.85)}
   .tags span{position:relative;padding-left:16px}
   .tags span::before{content:"";position:absolute;left:0;top:.72em;width:5px;height:5px;background:var(--gold-soft);border-radius:50%}
+  .tags--onlight{color:var(--ink-soft)}
+  .tags--onlight span::before{background:var(--gold)}
+
+  .district__placeholder{margin-top:40px;aspect-ratio:16/9;border:1px dashed var(--stone);background:var(--cream-2);
+    display:flex;align-items:center;justify-content:center;color:var(--stone-deep);font-size:.86rem;letter-spacing:.12em}
 
   /* S3 pillars */
   .pillars{background:var(--cream)}
@@ -294,16 +299,17 @@
   <div class="hero__scroll" aria-hidden="true">Scroll<i></i></div>
 </header>
 
-<!-- S2 (uses a real 鳳林商圈 storefront shot — genuinely of the district the
-     copy describes, unlike the earlier Fooyin campus photo) -->
-<section class="feature" id="district" data-feature>
-  <img class="feature__bg" data-src="images/jiulongtianyao-donutes-coffee.jpg" alt="鳳林商圈街景，多那之咖啡烘焙坊">
-  <div class="feature__scrim"></div>
-  <div class="feature__inner">
-    <p class="eyebrow reveal">The District</p>
-    <h2 class="reveal d1">一座商圈<br>正在成熟</h2>
-    <p class="lede reveal d2">88快速道路串聯高雄核心，雙商圈環繞，正成為下一個被看見的生活選擇。</p>
-    <div class="tags reveal d3">
+<!-- S2 — photo pulled per feedback (no dark-blue photo treatment wanted here),
+     left as an empty placeholder until a proper district photo is supplied -->
+<section class="section" id="district">
+  <div class="wrap">
+    <div class="section__head reveal">
+      <p class="eyebrow">The District</p>
+      <h2>一座商圈<br>正在成熟</h2>
+      <p class="lede">88快速道路串聯高雄核心，雙商圈環繞，正成為下一個被看見的生活選擇。</p>
+    </div>
+    <div class="district__placeholder reveal d1">待補商圈照片</div>
+    <div class="tags tags--onlight reveal d2">
       <span>鳳林商圈</span><span>大寮商圈</span><span>88快速道路</span>
       <span>永芳國小</span><span>大寮國中</span><span>輔英科技大學</span>
     </div>
