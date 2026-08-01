@@ -38,8 +38,6 @@
   .topbar{background:var(--char);color:#fff;padding:16px 0}
   .topbar .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
   .topbar__brand{font-family:var(--serif);font-weight:700;letter-spacing:.14em;font-size:1.25rem}
-  .topbar__back{font-size:.92rem;letter-spacing:.08em;color:var(--gold-soft);border-bottom:1px solid rgba(200,169,104,.5);padding-bottom:2px}
-  .topbar__back:hover{color:#fff;border-color:#fff}
 
   /* brand hero band — blue gradient banner, echoes the internal lunch-system header */
   .band{position:relative;overflow:hidden;background:linear-gradient(115deg,var(--blue-deep) 0%,var(--blue-mid) 48%,var(--blue-light) 100%);padding:56px 24px 78px}
@@ -48,9 +46,9 @@
   .band__clouds span:nth-child(1){width:78px;height:52px;left:0;top:14px}
   .band__clouds span:nth-child(2){width:46px;height:32px;left:58px;top:30px;background:rgba(255,255,255,.28)}
   .band__clouds span:nth-child(3){width:30px;height:20px;left:104px;top:4px;background:rgba(255,255,255,.32)}
-  .band__inner{position:relative;z-index:2;max-width:var(--maxw);margin:0 auto;text-align:right}
+  .band__inner{position:relative;z-index:2;max-width:var(--maxw);margin:0 auto;text-align:center}
   .band__title{color:#fff;font-size:clamp(1.9rem,4.2vw,2.7rem);letter-spacing:.12em}
-  .band__rule{width:54px;height:2px;background:var(--gold-soft);margin:16px 0 16px auto}
+  .band__rule{width:54px;height:2px;background:var(--gold-soft);margin:16px auto}
   .band__tag{color:rgba(255,255,255,.92);font-size:1rem;letter-spacing:.32em}
   .band__zigzag{position:absolute;left:0;right:0;bottom:0;height:34px;background:var(--cream);
     clip-path:polygon(0% 100%,0% 40%,8.33% 100%,16.66% 40%,25% 100%,33.33% 40%,41.66% 100%,50% 40%,58.33% 100%,66.66% 40%,75% 100%,83.33% 40%,91.66% 100%,100% 40%,100% 100%);}
@@ -77,6 +75,9 @@
   .field__label .unit{color:var(--stone-deep);font-weight:400;font-size:.84rem}
 
   .field-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .field-row .field{display:flex;flex-direction:column}
+  .field-row .field__label{min-height:2.6em;line-height:1.3;display:flex;align-items:flex-end}
+  .field-row .input,.field-row .select{margin-top:auto}
 
   .input,.select{width:100%;border:1px solid var(--line);background:var(--cream);padding:12px 13px;font-family:var(--sans);font-size:1.02rem;color:var(--ink)}
   .input{font-family:var(--num);font-variant-numeric:tabular-nums;font-weight:600;font-size:1.1rem}
@@ -118,12 +119,12 @@
   .bar-block .lbl{display:flex;justify-content:space-between;font-size:.94rem;margin-bottom:8px}
   .bar-block .lbl b{font-family:var(--num);font-variant-numeric:tabular-nums;color:var(--char)}
   .bar-track{height:8px;background:var(--line);border-radius:4px;overflow:hidden}
-  .bar-fill{height:100%;background:linear-gradient(90deg,var(--gold-soft),var(--gold));border-radius:4px;transition:width .3s}
+  .bar-fill{height:100%;background:linear-gradient(90deg,var(--gold-soft),var(--gold));border-radius:4px;transition:width .3s,background .3s}
+  .bar-fill.over-limit{background:linear-gradient(90deg,#c98a84,var(--bad))}
   .bar-note{font-size:.86rem;color:var(--stone-deep);margin-top:8px}
 
   .stage-title{font-size:1.05rem;font-weight:500;margin-bottom:14px;color:var(--ink)}
-  .stage-row{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:26px}
-  @media(max-width:900px){.stage-row{grid-template-columns:1fr 1fr 1fr}}
+  .stage-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:26px}
   @media(max-width:560px){.stage-row{grid-template-columns:1fr 1fr}}
   .stage{background:var(--cream);border:1px solid var(--line);padding:14px}
   .stage .k{font-size:.84rem;color:var(--stone-deep)}
@@ -161,8 +162,7 @@
 
 <header class="topbar">
   <div class="wrap">
-    <a class="topbar__brand" href="index.html">吉隆天曜</a>
-    <a class="topbar__back" href="index.html">← 返回官網</a>
+    <span class="topbar__brand">吉隆天曜</span>
   </div>
 </header>
 
@@ -226,7 +226,7 @@
         <div class="group__title">貸款條件</div>
         <div class="field-row">
           <div class="field">
-            <label class="field__label" for="loanAmount">申請貸款金額 <span class="unit">（萬元）</span></label>
+            <label class="field__label" for="loanAmount">貸款金額 <span class="unit">（萬元）</span></label>
             <input class="input" type="number" id="loanAmount" value="720" min="1" step="1">
           </div>
           <div class="field">
@@ -240,8 +240,8 @@
             <input class="input" type="number" id="grace" value="3" min="0" max="5" step="1">
           </div>
           <div class="field">
-            <label class="field__label" for="baseRate">原貸款利率 <span class="unit">（%，第7年起適用）</span></label>
-            <input class="input" type="number" id="baseRate" value="2.275" min="0" max="10" step="0.001">
+            <label class="field__label" for="baseRate">貸款利率 <span class="unit">（%，起跳利率）</span></label>
+            <input class="input" type="number" id="baseRate" value="1.775" min="0" max="10" step="0.001">
           </div>
         </div>
         <div class="field">
@@ -328,10 +328,9 @@
 <div class="cta-band">
   <div class="wrap">
     <h2>想進一步確認青安貸款資格？</h2>
-    <p>歡迎預約賞屋，現場專人為您說明個案優惠貸款方案</p>
+    <p>歡迎來電洽詢，專人為您說明個案優惠貸款方案</p>
     <div class="btns">
-      <a class="btn btn--solid" href="index.html#reserve">立即預約賞屋</a>
-      <a class="btn" style="border-color:var(--gold-soft);color:#fff" href="tel:07-7839189">來電洽詢 07-783-9189</a>
+      <a class="btn btn--solid" href="tel:07-7839189">來電洽詢 07-783-9189</a>
     </div>
   </div>
 </div>
@@ -379,7 +378,7 @@
     els.loanAmount.value = 720;
     els.years.value = 30;
     els.grace.value = 3;
-    els.baseRate.value = 2.275;
+    els.baseRate.value = 1.775;
     els.method.value = 'single';
     calculate();
   });
@@ -445,7 +444,8 @@
     var years = Math.max(1, parseInt(els.years.value, 10) || 0);
     var graceYears = Math.min(5, parseInt(els.grace.value, 10) || 0);
     if(graceYears >= years) graceYears = Math.max(0, years - 1);
-    var baseRate = parseFloat(els.baseRate.value) || 0;
+    var startRate = parseFloat(els.baseRate.value) || 0; // 起跳利率（第1-3年，已含青安補貼）
+    var baseRate = startRate - rateOffsetForYear(1); // 還原為第7年起適用的原貸款利率
     var methodLabel = els.method.options[els.method.selectedIndex].text;
     var priceCap = PRICE_CAP[countyCat];
     var loanCap = loanCapByStatus();
@@ -486,8 +486,12 @@
     // 房價門檻使用率
     var ratio = priceCap > 0 ? (priceWan / priceCap) : 0;
     var pct = Math.min(999, Math.round(ratio * 100));
-    document.getElementById('priceBar').style.width = Math.min(100, pct) + '%';
-    document.getElementById('priceBarPct').textContent = pct + '%';
+    var priceBarPctEl = document.getElementById('priceBarPct');
+    var priceBarEl = document.getElementById('priceBar');
+    priceBarEl.style.width = Math.min(100, pct) + '%';
+    priceBarEl.classList.toggle('over-limit', ratio > 1);
+    priceBarPctEl.textContent = pct + '%';
+    priceBarPctEl.style.color = ratio > 1 ? 'var(--bad)' : (ratio >= 0.85 ? 'var(--warn)' : 'var(--char)');
     var priceBarNote = document.getElementById('priceBarNote');
     priceBarNote.textContent = PRICE_CAP_LABEL[countyCat] + ' 青安3.0房屋總價門檻：' + fmtWan(priceCap) + ' 萬；目前輸入 ' + fmtWan(priceWan) + ' 萬。';
 
@@ -512,7 +516,6 @@
       { label: '第 1-3 年', y: 1, desc: '銀行半碼＋政府1.5碼，完整補貼2碼' },
       { label: '第 4 年', y: 4, desc: '補貼遞減半碼' },
       { label: '第 5 年', y: 5, desc: '補貼再遞減半碼' },
-      { label: '第 6 年', y: 6, desc: '補貼再遞減半碼' },
       { label: '第 7 年起', y: 7, desc: '補貼期滿，回到原貸款利率' }
     ];
     var stageWrap = document.getElementById('stageCards');
