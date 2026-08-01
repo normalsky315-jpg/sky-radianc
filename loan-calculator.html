@@ -122,8 +122,9 @@
   .bar-note{font-size:.78rem;color:var(--stone-deep);margin-top:8px}
 
   .stage-title{font-size:.95rem;font-weight:500;margin-bottom:14px;color:var(--ink)}
-  .stage-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:26px}
-  @media(max-width:760px){.stage-row{grid-template-columns:1fr 1fr}}
+  .stage-row{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:26px}
+  @media(max-width:900px){.stage-row{grid-template-columns:1fr 1fr 1fr}}
+  @media(max-width:560px){.stage-row{grid-template-columns:1fr 1fr}}
   .stage{background:var(--cream);border:1px solid var(--line);padding:14px}
   .stage .k{font-size:.74rem;color:var(--stone-deep)}
   .stage .v{font-family:var(--latin);font-size:1.15rem;font-weight:600;color:var(--char);margin-top:6px}
@@ -192,12 +193,10 @@
         <div class="field">
           <label class="field__label" for="county">縣市區域</label>
           <select class="select" id="county">
-            <option value="direct">高雄市</option>
-            <option value="direct">台北市</option>
-            <option value="direct">新北市</option>
-            <option value="direct">桃園市</option>
-            <option value="direct">台中市</option>
-            <option value="direct">台南市</option>
+            <option value="kaohsiung" selected>高雄市</option>
+            <option value="taipei">台北市</option>
+            <option value="newtaipei">新北市</option>
+            <option value="hsinchu">新竹縣市</option>
             <option value="other">其他縣市</option>
           </select>
         </div>
@@ -242,8 +241,8 @@
             <input class="input" type="number" id="grace" value="3" min="0" max="5" step="1">
           </div>
           <div class="field">
-            <label class="field__label" for="baseRate">基準利率 <span class="unit">（%）</span></label>
-            <input class="input" type="number" id="baseRate" value="2.06" min="0" max="10" step="0.01">
+            <label class="field__label" for="baseRate">原貸款利率 <span class="unit">（%，第7年起適用）</span></label>
+            <input class="input" type="number" id="baseRate" value="2.275" min="0" max="10" step="0.001">
           </div>
         </div>
         <div class="field">
@@ -274,7 +273,7 @@
       <div class="stat-row">
         <div class="stat">
           <div class="k">青安額度上限</div>
-          <div class="v">1,000 萬</div>
+          <div class="v" id="statYouthCap">1,000 萬</div>
         </div>
         <div class="stat">
           <div class="k">估算最高可貸</div>
@@ -322,7 +321,7 @@
   </div>
 
   <p class="disclaimer">
-    ※ 本試算工具依「青安貸款3.0」政策架構設計，額度上限、房價門檻、補貼遞減節奏等數值為試算示意用途，非官方公告數字，實際資格認定、額度、利率與各項費用，均以承辦銀行與內政部最新公告為準。試算結果四捨五入至整數，可能與實際攤還表略有差異。
+    ※ 本試算工具依行政院公布之「青年安心成家購屋優惠貸款3.0方案」規則設計（額度上限、房屋總價門檻、利息補貼遞減節奏、貸款成數、年齡與所得排富門檻），惟利率屬浮動指標且可能調整，實際資格認定、核貸額度、利率與各項費用，均以承辦銀行與內政部最新公告為準。試算結果四捨五入至整數，可能與實際攤還表略有差異，僅供購屋規劃參考，非正式貸款核准文件。
   </p>
 </section>
 
@@ -343,17 +342,27 @@
 
 <script>
 (function(){
-  var MAX_YOUTH_LOAN = 1000; // 萬元，青安額度上限
-  var PRICE_CAP = { direct: 3000, other: 2000 }; // 萬元，房價門檻（試算示意值）
+  var LTV_MAX = 0.8; // 貸款成數最高8成
+  var PRICE_CAP = { taipei: 3500, newtaipei: 2500, hsinchu: 2500, kaohsiung: 2000, other: 2000 }; // 萬元，青安3.0房屋總價上限
+  var PRICE_CAP_LABEL = { taipei: '台北市', newtaipei: '新北市', hsinchu: '新竹縣市', kaohsiung: '高雄市（其餘縣市）', other: '其他縣市' };
 
   var els = {};
   ['county','price','age','income','married2y','minorChild','noOwnHome','neverUsed',
    'loanAmount','years','grace','baseRate','method'].forEach(function(id){ els[id] = document.getElementById(id); });
 
+  function loanCapByStatus(){
+    if(els.minorChild.checked) return 1500;
+    if(els.married2y.checked) return 1200;
+    return 1000;
+  }
+
+  function computeMaxLoan(priceWan){
+    return Math.min(loanCapByStatus(), priceWan * LTV_MAX);
+  }
+
   document.getElementById('applyMax').addEventListener('click', function(){
     var priceWan = parseFloat(els.price.value) || 0;
-    var cap = PRICE_CAP[els.county.value];
-    var maxLoan = Math.min(MAX_YOUTH_LOAN, priceWan * 0.9, cap * 0.9);
+    var maxLoan = computeMaxLoan(priceWan);
     els.loanAmount.value = Math.max(0, Math.round(maxLoan));
     calculate();
   });
@@ -370,7 +379,7 @@
     els.loanAmount.value = 720;
     els.years.value = 30;
     els.grace.value = 3;
-    els.baseRate.value = 2.06;
+    els.baseRate.value = 2.275;
     els.method.value = 'step';
     calculate();
   });
@@ -383,10 +392,11 @@
 
   function rateOffsetForYear(y, method){
     if(method !== 'step') return 0;
-    if(y <= 3) return -0.25;   // 第1-3年：完整補貼2碼
-    if(y === 4) return -0.125; // 第4年：補貼減少為1碼
-    if(y === 5) return -0.0625;// 第5年：補貼再減少為0.5碼
-    return 0;                  // 第6年起：回到原貸款利率
+    if(y <= 3) return -0.5;    // 第1-3年：銀行減收半碼(0.125%)+政府補貼1.5碼(0.375%)＝完整2碼
+    if(y === 4) return -0.375; // 第4年：補貼遞減半碼
+    if(y === 5) return -0.25;  // 第5年：再遞減半碼
+    if(y === 6) return -0.125; // 第6年：再遞減半碼
+    return 0;                  // 第7年起：補貼期滿，回到原貸款利率
   }
 
   function buildSchedule(principal, baseRatePct, years, graceYears, method){
@@ -438,10 +448,12 @@
     var baseRate = parseFloat(els.baseRate.value) || 0;
     var method = els.method.value;
     var priceCap = PRICE_CAP[countyCat];
+    var loanCap = loanCapByStatus();
 
-    var maxLoan = Math.min(MAX_YOUTH_LOAN, priceWan * 0.9, priceCap * 0.9);
+    var maxLoan = computeMaxLoan(priceWan);
     var minDown = Math.max(0, priceWan - maxLoan);
 
+    document.getElementById('statYouthCap').textContent = fmtWan(loanCap) + ' 萬';
     document.getElementById('statMaxLoan').textContent = fmtWan(maxLoan) + ' 萬';
     document.getElementById('statMinDown').textContent = fmtWan(minDown) + ' 萬';
 
@@ -477,7 +489,7 @@
     document.getElementById('priceBar').style.width = Math.min(100, pct) + '%';
     document.getElementById('priceBarPct').textContent = pct + '%';
     var priceBarNote = document.getElementById('priceBarNote');
-    priceBarNote.textContent = (countyCat === 'direct' ? '直轄市' : '其他縣市') + ' 青安3.0房屋總價門檻：' + fmtWan(priceCap) + ' 萬；目前輸入 ' + fmtWan(priceWan) + ' 萬。';
+    priceBarNote.textContent = PRICE_CAP_LABEL[countyCat] + ' 青安3.0房屋總價門檻：' + fmtWan(priceCap) + ' 萬；目前輸入 ' + fmtWan(priceWan) + ' 萬。';
 
     var statusBadge = document.getElementById('statusBadge');
     var statusNote = document.getElementById('statusNote');
@@ -497,10 +509,11 @@
 
     // 補貼退場付款節奏卡片
     var stages = [
-      { label: '第 1-3 年', y: 1, desc: '完整補貼 2 碼' },
-      { label: '第 4 年', y: 4, desc: '補貼減少半碼' },
-      { label: '第 5 年', y: 5, desc: '再減少半碼' },
-      { label: '第 6 年起', y: 6, desc: '回到原貸款利率' }
+      { label: '第 1-3 年', y: 1, desc: '銀行半碼＋政府1.5碼，完整補貼2碼' },
+      { label: '第 4 年', y: 4, desc: '補貼遞減半碼' },
+      { label: '第 5 年', y: 5, desc: '補貼再遞減半碼' },
+      { label: '第 6 年', y: 6, desc: '補貼再遞減半碼' },
+      { label: '第 7 年起', y: 7, desc: '補貼期滿，回到原貸款利率' }
     ];
     var stageWrap = document.getElementById('stageCards');
     stageWrap.innerHTML = '';
@@ -518,9 +531,16 @@
     });
 
     // 資格檢核
+    var income = parseFloat(els.income.value) || 0;
     var checks = [];
-    if(age < 20 || age > 45){
-      checks.push({ ok: false, text: '借款人年齡建議介於 20–45 歲之間，超出範圍請洽承辦銀行確認資格認定。' });
+    if(age >= 50){
+      checks.push({ ok: false, text: '借款人年齡需未滿 50 歲，才符合青安貸款3.0申請資格。' });
+    }
+    if(age + years > 80){
+      checks.push({ ok: false, text: '「申貸年齡＋核貸年限」合計為 ' + (age + years) + '，不得超過 80，請調整貸款年限或洽承辦銀行確認。' });
+    }
+    if(income > 200){
+      checks.push({ ok: false, text: '本人年所得（' + income + ' 萬）已超過 200 萬元排富門檻，可能不符合青安貸款3.0申請資格。' });
     }
     if(!els.noOwnHome.checked){
       checks.push({ ok: false, text: '需本人／配偶／未成年子女均無自有住宅，才符合青安貸款資格。' });
@@ -552,7 +572,7 @@
     }
     var infoDiv = document.createElement('div');
     infoDiv.className = 'elig elig--warn';
-    infoDiv.textContent = '一般家庭青安貸款最高額度為 1,000 萬元；若符合新婚或育兒等加碼條件，前3年可獲得最大2碼優惠利率，實際依承辦銀行核定為準。';
+    infoDiv.textContent = '一般家庭青安貸款額度上限為 1,000 萬元，新婚2年內家庭最高 1,200 萬元，育有未成年子女家庭最高 1,500 萬元；貸款成數最高8成。青安貸款3.0申請期間為 2026年8月1日至2029年7月31日。';
     eligBox.appendChild(infoDiv);
 
     // 年度摘要（前10年，或至貸款年限為止）
