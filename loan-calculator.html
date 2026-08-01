@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>貸款試算｜吉隆天曜</title>
-<meta name="description" content="吉隆天曜貸款試算工具，輸入總價、貸款成數、利率、年限、寬限期，即可試算本息均攤或本金均攤的每月還款金額與總利息。">
+<title>青安貸款3.0試算｜吉隆天曜</title>
+<meta name="description" content="吉隆天曜青安貸款3.0試算工具，輸入總價、身份條件、貸款年限與寬限期，試算額度上限、月付金、補貼退場付款節奏與資格檢核。">
 <meta name="robots" content="noindex">
 <link rel="canonical" href="https://normalsky315-jpg.github.io/sky-radianc/loan-calculator.html">
 
@@ -16,8 +16,10 @@
     --cream:#FAF8F4;--cream-2:#F2EDE4;--stone:#C9B79C;--stone-deep:#8C7A5E;
     --ink:#1C1A17;--ink-soft:#4A453E;--gold:#B6924E;--gold-soft:#C8A968;
     --char:#0D2A4D;--char-2:#1A3F6E;--line:rgba(28,26,23,.14);
+    --blue-deep:#122F5C;--blue-mid:#245A96;--blue-light:#6FA0D6;
+    --ok:#3F7A57;--ok-bg:#EAF3ED;--warn:#B6924E;--warn-bg:#F7EFDE;--bad:#A6473F;--bad-bg:#F8EAE8;
     --serif:"Noto Serif TC",serif;--sans:"Noto Sans TC",sans-serif;--latin:"Cormorant Garamond",serif;
-    --maxw:1120px;
+    --maxw:1160px;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
@@ -25,9 +27,7 @@
   a{color:inherit;text-decoration:none}
   .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
   .eyebrow{font-family:var(--sans);font-size:.72rem;font-weight:500;letter-spacing:.42em;text-transform:uppercase;color:var(--gold)}
-  .rule{width:54px;height:1px;background:var(--gold);margin:22px 0;opacity:.8}
   h1,h2,h3{font-family:var(--serif);font-weight:600;line-height:1.28;letter-spacing:.02em}
-  .latin{font-family:var(--latin);font-style:italic;letter-spacing:.06em;color:var(--stone-deep);font-weight:400}
   .btn{display:inline-flex;align-items:center;gap:.6em;font-family:var(--sans);font-weight:500;font-size:.95rem;letter-spacing:.16em;padding:15px 30px;border:1px solid var(--gold);color:var(--ink);background:transparent;cursor:pointer;transition:background .3s,color .3s}
   .btn:hover{background:var(--gold);color:#fff}
   .btn--solid{background:var(--gold);color:#fff;border-color:var(--gold)}
@@ -41,73 +41,109 @@
   .topbar__back{font-size:.82rem;letter-spacing:.08em;color:var(--gold-soft);border-bottom:1px solid rgba(200,169,104,.5);padding-bottom:2px}
   .topbar__back:hover{color:#fff;border-color:#fff}
 
-  .hero{padding:56px 0 8px;text-align:center}
-  .hero h1{font-size:clamp(1.7rem,4vw,2.5rem)}
-  .hero .lede{max-width:52ch;margin:18px auto 0;color:var(--ink-soft);font-size:1.02rem}
+  /* brand hero band — blue gradient banner, echoes the internal lunch-system header */
+  .band{position:relative;overflow:hidden;background:linear-gradient(115deg,var(--blue-deep) 0%,var(--blue-mid) 48%,var(--blue-light) 100%);padding:56px 24px 78px}
+  .band__clouds{position:absolute;top:26px;left:34px;width:220px;height:80px;pointer-events:none}
+  .band__clouds span{position:absolute;border-radius:50%;background:rgba(255,255,255,.22)}
+  .band__clouds span:nth-child(1){width:78px;height:52px;left:0;top:14px}
+  .band__clouds span:nth-child(2){width:46px;height:32px;left:58px;top:30px;background:rgba(255,255,255,.28)}
+  .band__clouds span:nth-child(3){width:30px;height:20px;left:104px;top:4px;background:rgba(255,255,255,.32)}
+  .band__inner{position:relative;z-index:2;max-width:var(--maxw);margin:0 auto;text-align:right}
+  .band__title{color:#fff;font-size:clamp(1.9rem,4.2vw,2.7rem);letter-spacing:.12em}
+  .band__rule{width:54px;height:2px;background:var(--gold-soft);margin:16px 0 16px auto}
+  .band__tag{color:rgba(255,255,255,.92);font-size:.9rem;letter-spacing:.32em}
+  .band__zigzag{position:absolute;left:0;right:0;bottom:0;height:34px;background:var(--cream);
+    clip-path:polygon(0% 100%,0% 40%,8.33% 100%,16.66% 40%,25% 100%,33.33% 40%,41.66% 100%,50% 40%,58.33% 100%,66.66% 40%,75% 100%,83.33% 40%,91.66% 100%,100% 40%,100% 100%);}
 
-  .section{padding:36px 0 96px}
+  .hero{padding:44px 0 8px;text-align:center}
+  .hero h1{font-size:clamp(1.5rem,3.6vw,2.1rem)}
+  .hero .lede{max-width:56ch;margin:16px auto 0;color:var(--ink-soft);font-size:1rem}
+
+  .section{padding:30px 0 96px}
 
   /* calculator layout */
-  .calc{display:grid;grid-template-columns:1fr;gap:28px;margin-top:20px}
-  @media(min-width:900px){.calc{grid-template-columns:1.05fr .95fr}}
+  .calc{display:grid;grid-template-columns:1fr;gap:24px;margin-top:20px;align-items:start}
+  @media(min-width:960px){.calc{grid-template-columns:360px 1fr}}
 
-  .panel{background:#fff;border:1px solid var(--line);padding:32px clamp(20px,4vw,40px)}
-  .panel h2{font-size:1.3rem;margin-bottom:6px}
-  .panel__sub{font-size:.85rem;color:var(--stone-deep);margin-bottom:26px}
+  .panel{background:#fff;border:1px solid var(--line);padding:28px clamp(18px,3vw,32px)}
+  .panel h2{font-size:1.15rem;margin-bottom:2px}
 
-  .field{margin-bottom:24px}
+  .group{margin-bottom:26px}
+  .group__title{font-size:.78rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid var(--line)}
+
+  .field{margin-bottom:18px}
   .field:last-child{margin-bottom:0}
-  .field__label{display:flex;align-items:baseline;justify-content:space-between;font-size:.86rem;font-weight:500;letter-spacing:.04em;color:var(--ink);margin-bottom:10px}
-  .field__label span.unit{color:var(--stone-deep);font-weight:400}
-  .field__value{font-family:var(--latin);font-weight:600;color:var(--gold);font-size:1.02rem}
+  .field__label{display:block;font-size:.84rem;font-weight:500;color:var(--ink);margin-bottom:8px}
+  .field__label .unit{color:var(--stone-deep);font-weight:400;font-size:.78rem}
 
-  .num-input{display:flex;align-items:center;border:1px solid var(--line);background:var(--cream)}
-  .num-input input[type=number]{flex:1;border:0;background:transparent;padding:12px 14px;font-family:var(--latin);font-size:1.15rem;font-weight:600;color:var(--ink);width:100%}
-  .num-input input[type=number]:focus{outline:none}
-  .num-input .suffix{padding:0 14px;font-size:.82rem;color:var(--stone-deep);white-space:nowrap}
+  .field-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 
-  input[type=range]{width:100%;-webkit-appearance:none;appearance:none;height:4px;background:var(--line);border-radius:2px;margin-top:8px;outline:none}
-  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:18px;height:18px;border-radius:50%;background:var(--gold);cursor:pointer;border:3px solid #fff;box-shadow:0 0 0 1px var(--gold)}
-  input[type=range]::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:var(--gold);cursor:pointer;border:3px solid #fff;box-shadow:0 0 0 1px var(--gold)}
+  .input,.select{width:100%;border:1px solid var(--line);background:var(--cream);padding:11px 13px;font-family:var(--sans);font-size:.95rem;color:var(--ink)}
+  .input{font-family:var(--latin);font-weight:600;font-size:1.02rem}
+  .input:focus,.select:focus{outline:none;border-color:var(--gold)}
+  .select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--gold) 50%),linear-gradient(135deg,var(--gold) 50%,transparent 50%);background-position:calc(100% - 18px) center,calc(100% - 13px) center;background-size:5px 5px,5px 5px;background-repeat:no-repeat}
 
-  .select{border:1px solid var(--line);background:var(--cream);padding:12px 14px;font-family:var(--sans);font-size:.95rem;color:var(--ink);width:100%;appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--gold) 50%),linear-gradient(135deg,var(--gold) 50%,transparent 50%);background-position:calc(100% - 20px) center,calc(100% - 15px) center;background-size:5px 5px,5px 5px;background-repeat:no-repeat}
+  .check{display:flex;align-items:flex-start;gap:9px;margin-bottom:12px;font-size:.84rem;color:var(--ink-soft);cursor:pointer}
+  .check:last-child{margin-bottom:0}
+  .check input{margin-top:3px;accent-color:var(--gold);width:15px;height:15px;flex-shrink:0}
 
-  .toggle{display:flex;border:1px solid var(--gold);overflow:hidden}
-  .toggle button{flex:1;background:transparent;border:0;padding:12px 10px;font-family:var(--sans);font-size:.88rem;letter-spacing:.04em;color:var(--ink);cursor:pointer;transition:background .3s,color .3s}
-  .toggle button.active{background:var(--gold);color:#fff}
-
-  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .btn-row{display:flex;gap:10px;margin-top:24px}
+  .btn-row .btn{flex:1;padding:13px 10px;font-size:.8rem;letter-spacing:.08em;justify-content:center}
+  .btn-ghost{border-color:var(--line);color:var(--ink-soft)}
+  .btn-ghost:hover{background:var(--cream-2);color:var(--ink);}
 
   /* results panel */
-  .panel--result{background:var(--char);color:#fff;border:none}
-  .panel--result .panel__sub{color:rgba(255,255,255,.6)}
-  .result-hero{text-align:center;padding:8px 0 26px;border-bottom:1px solid rgba(255,255,255,.14);margin-bottom:26px}
-  .result-hero .label{font-size:.78rem;letter-spacing:.12em;color:var(--gold-soft);text-transform:uppercase}
-  .result-hero .amount{font-family:var(--latin);font-size:clamp(2.1rem,5vw,2.7rem);font-weight:600;margin-top:10px;color:#fff}
-  .result-hero .amount small{font-size:1rem;font-family:var(--sans);color:rgba(255,255,255,.7);margin-left:6px}
-  .result-hero .amount2{margin-top:6px;font-size:.92rem;color:rgba(255,255,255,.75)}
+  .result-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:6px}
+  .result-note{color:var(--ink-soft);font-size:.85rem;margin-bottom:24px}
+  .badge{font-size:.76rem;letter-spacing:.05em;padding:7px 14px;border-radius:20px;white-space:nowrap;font-weight:500}
+  .badge--ok{background:var(--ok-bg);color:var(--ok)}
+  .badge--warn{background:var(--warn-bg);color:var(--warn)}
+  .badge--bad{background:var(--bad-bg);color:var(--bad)}
 
-  .stat-row{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:22px}
-  .stat{border:1px solid rgba(255,255,255,.14);padding:16px}
-  .stat .k{font-size:.76rem;color:rgba(255,255,255,.6);letter-spacing:.06em}
-  .stat .v{font-family:var(--latin);font-size:1.3rem;font-weight:600;margin-top:6px;color:var(--gold-soft)}
+  .stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:22px}
+  @media(max-width:560px){.stat-row{grid-template-columns:1fr 1fr}}
+  .stat{background:var(--cream);border:1px solid var(--line);padding:16px}
+  .stat .k{font-size:.76rem;color:var(--stone-deep)}
+  .stat .v{font-family:var(--latin);font-size:1.35rem;font-weight:600;margin-top:6px;color:var(--char)}
 
-  .chart-wrap{display:flex;align-items:center;gap:22px;margin:26px 0;flex-wrap:wrap;justify-content:center}
-  .legend{display:flex;flex-direction:column;gap:10px;font-size:.86rem}
-  .legend .row{display:flex;align-items:center;gap:8px}
-  .legend .dot{width:11px;height:11px;border-radius:50%;display:inline-block}
+  .pay-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px}
+  @media(max-width:560px){.pay-row{grid-template-columns:1fr}}
+  .pay-card{border:1px solid var(--gold);background:var(--cream-2);padding:18px}
+  .pay-card .k{font-size:.8rem;color:var(--ink-soft)}
+  .pay-card .v{font-family:var(--latin);font-size:1.7rem;font-weight:600;color:var(--char);margin-top:6px}
+  .pay-card .v small{font-family:var(--sans);font-size:.85rem;font-weight:400;color:var(--ink-soft);margin-left:4px}
+  .pay-card .d{font-size:.78rem;color:var(--stone-deep);margin-top:8px;line-height:1.6}
 
-  .schedule-toggle{text-align:center;margin-top:8px}
-  .schedule-toggle button{background:transparent;border:1px solid rgba(255,255,255,.3);color:#fff;padding:10px 22px;font-size:.8rem;letter-spacing:.1em;cursor:pointer}
-  .schedule-toggle button:hover{border-color:var(--gold-soft);color:var(--gold-soft)}
+  .bar-block{margin-bottom:26px}
+  .bar-block .lbl{display:flex;justify-content:space-between;font-size:.86rem;margin-bottom:8px}
+  .bar-block .lbl b{font-family:var(--latin);color:var(--char)}
+  .bar-track{height:8px;background:var(--line);border-radius:4px;overflow:hidden}
+  .bar-fill{height:100%;background:linear-gradient(90deg,var(--gold-soft),var(--gold));border-radius:4px;transition:width .3s}
+  .bar-note{font-size:.78rem;color:var(--stone-deep);margin-top:8px}
 
-  .schedule{margin-top:22px;max-height:340px;overflow:auto;border:1px solid rgba(255,255,255,.14);display:none}
-  .schedule.open{display:block}
-  .schedule table{width:100%;border-collapse:collapse;font-size:.82rem}
-  .schedule th,.schedule td{padding:10px 12px;text-align:right;white-space:nowrap}
-  .schedule th{position:sticky;top:0;background:#0a2038;color:var(--gold-soft);font-weight:500;font-size:.74rem;letter-spacing:.04em}
-  .schedule td:first-child,.schedule th:first-child{text-align:left}
-  .schedule tr:nth-child(even) td{background:rgba(255,255,255,.03)}
+  .stage-title{font-size:.95rem;font-weight:500;margin-bottom:14px;color:var(--ink)}
+  .stage-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:26px}
+  @media(max-width:760px){.stage-row{grid-template-columns:1fr 1fr}}
+  .stage{background:var(--cream);border:1px solid var(--line);padding:14px}
+  .stage .k{font-size:.74rem;color:var(--stone-deep)}
+  .stage .v{font-family:var(--latin);font-size:1.15rem;font-weight:600;color:var(--char);margin-top:6px}
+  .stage .r{font-size:.74rem;color:var(--gold);margin-top:2px}
+  .stage .d{font-size:.72rem;color:var(--ink-soft);margin-top:6px;line-height:1.5}
+
+  .elig-title{font-size:.95rem;font-weight:500;margin-bottom:14px}
+  .elig{padding:14px 16px;font-size:.84rem;line-height:1.7;margin-bottom:10px}
+  .elig:last-child{margin-bottom:0}
+  .elig--ok{background:var(--ok-bg);color:var(--ok)}
+  .elig--warn{background:var(--warn-bg);color:#8a6a30}
+  .elig--bad{background:var(--bad-bg);color:var(--bad)}
+
+  .table-wrap{margin-top:28px;border:1px solid var(--line);overflow-x:auto}
+  table{width:100%;border-collapse:collapse;font-size:.84rem;min-width:520px}
+  th,td{padding:11px 14px;text-align:right;white-space:nowrap}
+  th{background:var(--char);color:var(--gold-soft);font-weight:500;font-size:.76rem;letter-spacing:.03em}
+  td:first-child,th:first-child{text-align:left}
+  tr:nth-child(even) td{background:var(--cream)}
+  tr td{border-bottom:1px solid var(--line)}
 
   .disclaimer{max-width:var(--maxw);margin:40px auto 0;padding:0 24px;font-size:.78rem;color:var(--stone-deep);line-height:1.9}
 
@@ -129,10 +165,20 @@
   </div>
 </header>
 
+<div class="band">
+  <div class="band__clouds"><span></span><span></span><span></span></div>
+  <div class="band__inner">
+    <div class="band__title">吉隆天曜</div>
+    <div class="band__rule"></div>
+    <div class="band__tag">天光所至　曜影流轉</div>
+  </div>
+  <div class="band__zigzag"></div>
+</div>
+
 <div class="hero wrap">
-  <p class="eyebrow">JILONG · TIANYAO</p>
+  <p class="eyebrow">青安貸款 3.0 試算</p>
   <h1>貸款試算</h1>
-  <p class="lede">輸入總價、貸款成數、利率與年限，立即試算每月還款金額與總利息，掌握購屋負擔。以下試算結果僅供參考，實際貸款條件請以銀行核貸為準。</p>
+  <p class="lede">輸入總價、身份條件、貸款年限與寬限期，試算青安貸款3.0的額度上限、寬限期月付、補貼退場付款節奏與資格檢核。以下結果僅供參考，實際核貸依承辦銀行審核為準。</p>
 </div>
 
 <section class="section wrap">
@@ -140,116 +186,135 @@
 
     <!-- INPUT PANEL -->
     <div class="panel">
-      <h2>試算條件</h2>
-      <p class="panel__sub">預設總價 900 萬・貸款八成，可依實際情況調整</p>
+      <h2>房屋與身份</h2>
 
-      <div class="field">
-        <div class="field__label"><span>房屋總價</span><span class="unit">萬元</span></div>
-        <div class="num-input">
-          <input type="number" id="price" value="900" min="1" step="1">
-          <span class="suffix">萬元</span>
+      <div class="group" style="margin-top:22px">
+        <div class="field">
+          <label class="field__label" for="county">縣市區域</label>
+          <select class="select" id="county">
+            <option value="direct">高雄市</option>
+            <option value="direct">台北市</option>
+            <option value="direct">新北市</option>
+            <option value="direct">桃園市</option>
+            <option value="direct">台中市</option>
+            <option value="direct">台南市</option>
+            <option value="other">其他縣市</option>
+          </select>
         </div>
-      </div>
-
-      <div class="field">
-        <div class="field__label">
-          <span>貸款成數</span>
-          <span class="field__value"><span id="ratioVal">80</span>%</span>
+        <div class="field">
+          <label class="field__label" for="price">買賣總價／鑑價，取較低者 <span class="unit">（萬元）</span></label>
+          <input class="input" type="number" id="price" value="900" min="1" step="1">
         </div>
-        <input type="range" id="ratio" min="10" max="100" step="1" value="80">
-      </div>
-
-      <div class="field">
-        <div class="field__label"><span>貸款金額</span><span class="unit">萬元（可直接輸入覆寫成數）</span></div>
-        <div class="num-input">
-          <input type="number" id="loanAmount" value="720" min="1" step="1">
-          <span class="suffix">萬元</span>
-        </div>
-      </div>
-
-      <div class="field grid2">
-        <div>
-          <div class="field__label"><span>貸款年利率</span><span class="unit">%</span></div>
-          <div class="num-input">
-            <input type="number" id="rate" value="2.1" min="0" max="20" step="0.01">
-            <span class="suffix">%</span>
+        <div class="field-row">
+          <div class="field">
+            <label class="field__label" for="age">借款人年齡</label>
+            <input class="input" type="number" id="age" value="35" min="18" max="99" step="1">
           </div>
-        </div>
-        <div>
-          <div class="field__label"><span>貸款年限</span><span class="unit">年</span></div>
-          <div class="num-input">
-            <input type="number" id="years" value="30" min="1" max="40" step="1">
-            <span class="suffix">年</span>
+          <div class="field">
+            <label class="field__label" for="income">本人年所得 <span class="unit">（萬元）</span></label>
+            <input class="input" type="number" id="income" value="80" min="0" step="1">
           </div>
         </div>
       </div>
 
-      <div class="field">
-        <div class="field__label"><span>寬限期</span><span class="unit">期間內只還息、不還本金</span></div>
-        <select class="select" id="grace">
-          <option value="0">不設寬限期</option>
-          <option value="1">1 年</option>
-          <option value="2">2 年</option>
-          <option value="3" selected>3 年</option>
-          <option value="4">4 年</option>
-          <option value="5">5 年</option>
-        </select>
+      <div class="group">
+        <label class="check"><input type="checkbox" id="married2y"> 申請日前2年內結婚</label>
+        <label class="check"><input type="checkbox" id="minorChild"> 育有未成年子女</label>
+        <label class="check"><input type="checkbox" id="noOwnHome" checked> 本人／配偶／未成年子女無自有住宅</label>
+        <label class="check"><input type="checkbox" id="neverUsed" checked> 未曾使用過青安或農安貸款</label>
       </div>
 
-      <div class="field">
-        <div class="field__label"><span>還款方式</span></div>
-        <div class="toggle" id="methodToggle">
-          <button type="button" data-v="fixed" class="active">本息均攤</button>
-          <button type="button" data-v="principal">本金均攤</button>
+      <div class="group">
+        <div class="group__title">貸款條件</div>
+        <div class="field-row">
+          <div class="field">
+            <label class="field__label" for="loanAmount">申請貸款金額 <span class="unit">（萬元）</span></label>
+            <input class="input" type="number" id="loanAmount" value="720" min="1" step="1">
+          </div>
+          <div class="field">
+            <label class="field__label" for="years">貸款年限 <span class="unit">（年）</span></label>
+            <input class="input" type="number" id="years" value="30" min="1" max="40" step="1">
+          </div>
         </div>
+        <div class="field-row">
+          <div class="field">
+            <label class="field__label" for="grace">寬限期 <span class="unit">（年）</span></label>
+            <input class="input" type="number" id="grace" value="3" min="0" max="5" step="1">
+          </div>
+          <div class="field">
+            <label class="field__label" for="baseRate">基準利率 <span class="unit">（%）</span></label>
+            <input class="input" type="number" id="baseRate" value="2.06" min="0" max="10" step="0.01">
+          </div>
+        </div>
+        <div class="field">
+          <label class="field__label" for="method">計息方式</label>
+          <select class="select" id="method">
+            <option value="step" selected>階梯式（青安補貼遞減）</option>
+            <option value="flat">一段式機動（不含青安補貼）</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button type="button" class="btn btn--solid" id="applyMax">套用最高可貸</button>
+        <button type="button" class="btn btn-ghost" id="resetDefaults">重設預設值</button>
       </div>
     </div>
 
     <!-- RESULT PANEL -->
-    <div class="panel panel--result">
-      <h2>試算結果</h2>
-      <p class="panel__sub" id="methodNote">本息均攤・每月還款金額固定</p>
-
-      <div class="result-hero">
-        <div class="label" id="monthlyLabel">每月還款金額（寬限期後）</div>
-        <div class="amount"><span id="monthlyMain">0</span><small>元 / 月</small></div>
-        <div class="amount2" id="monthlyGraceLine"></div>
+    <div class="panel">
+      <div class="result-head">
+        <div>
+          <h2>試算結果</h2>
+        </div>
+        <span class="badge" id="statusBadge">－</span>
       </div>
+      <p class="result-note" id="statusNote">請輸入條件以開始試算。</p>
 
       <div class="stat-row">
         <div class="stat">
-          <div class="k">貸款總額</div>
-          <div class="v" id="statLoan">0 萬</div>
+          <div class="k">青安額度上限</div>
+          <div class="v">1,000 萬</div>
         </div>
         <div class="stat">
-          <div class="k">總繳利息</div>
-          <div class="v" id="statInterest">0 萬</div>
+          <div class="k">估算最高可貸</div>
+          <div class="v" id="statMaxLoan">0 萬</div>
         </div>
         <div class="stat">
-          <div class="k">本息總還款</div>
-          <div class="v" id="statTotal">0 萬</div>
-        </div>
-        <div class="stat">
-          <div class="k">貸款成數</div>
-          <div class="v" id="statRatio">80%</div>
+          <div class="k">最低自備款</div>
+          <div class="v" id="statMinDown">0 萬</div>
         </div>
       </div>
 
-      <div class="chart-wrap">
-        <canvas id="pieChart" width="150" height="150"></canvas>
-        <div class="legend">
-          <div class="row"><span class="dot" style="background:var(--gold-soft)"></span>本金 <span id="legendPrincipal" style="margin-left:auto;color:rgba(255,255,255,.7)"></span></div>
-          <div class="row"><span class="dot" style="background:#3a5a86"></span>利息 <span id="legendInterest" style="margin-left:auto;color:rgba(255,255,255,.7)"></span></div>
+      <div class="pay-row">
+        <div class="pay-card">
+          <div class="k" id="graceLabel">寬限期月付</div>
+          <div class="v"><span id="graceMonthly">0</span><small>元 / 月</small></div>
+          <div class="d">只繳利息，未含火險、地震險、帳管費與銀行其他費用。</div>
+        </div>
+        <div class="pay-card">
+          <div class="k" id="postGraceLabel">寬限期後月付</div>
+          <div class="v"><span id="postGraceMonthly">0</span><small>元 / 月</small></div>
+          <div class="d" id="postGraceNote"></div>
         </div>
       </div>
 
-      <div class="schedule-toggle">
-        <button type="button" id="scheduleBtn">查看每年還款明細 ▾</button>
+      <div class="bar-block">
+        <div class="lbl"><span>房價門檻使用率</span><b id="priceBarPct">0%</b></div>
+        <div class="bar-track"><div class="bar-fill" id="priceBar" style="width:0%"></div></div>
+        <p class="bar-note" id="priceBarNote"></p>
       </div>
-      <div class="schedule" id="scheduleWrap">
+
+      <div class="stage-title">補貼退場付款節奏</div>
+      <div class="stage-row" id="stageCards"></div>
+
+      <div class="elig-title">資格檢核</div>
+      <div id="eligibilityBox"></div>
+
+      <div class="table-wrap">
         <table>
-          <thead><tr><th>年度</th><th>年繳本金</th><th>年繳利息</th><th>年繳合計</th><th>期末餘額</th></tr></thead>
-          <tbody id="scheduleBody"></tbody>
+          <thead><tr><th>年度</th><th>適用年利率</th><th>月付</th><th>年度利息</th><th>年底剩餘本金</th></tr></thead>
+          <tbody id="summaryBody"></tbody>
         </table>
       </div>
     </div>
@@ -257,14 +322,14 @@
   </div>
 
   <p class="disclaimer">
-    ※ 本試算工具僅供購屋規劃參考，非正式貸款核准文件。實際貸款金額、利率、成數、年限與寬限期，均以各銀行實際審核結果為準；試算結果四捨五入至整數，可能與實際攤還表略有差異。
+    ※ 本試算工具依「青安貸款3.0」政策架構設計，額度上限、房價門檻、補貼遞減節奏等數值為試算示意用途，非官方公告數字，實際資格認定、額度、利率與各項費用，均以承辦銀行與內政部最新公告為準。試算結果四捨五入至整數，可能與實際攤還表略有差異。
   </p>
 </section>
 
 <div class="cta-band">
   <div class="wrap">
-    <h2>想進一步了解貸款方案？</h2>
-    <p>歡迎預約賞屋，現場專人為您說明個案優惠貸款條件</p>
+    <h2>想進一步確認青安貸款資格？</h2>
+    <p>歡迎預約賞屋，現場專人為您說明個案優惠貸款方案</p>
     <div class="btns">
       <a class="btn btn--solid" href="index.html#reserve">立即預約賞屋</a>
       <a class="btn" style="border-color:var(--gold-soft);color:#fff" href="tel:07-7839189">來電洽詢 07-783-9189</a>
@@ -278,188 +343,234 @@
 
 <script>
 (function(){
-  var priceEl = document.getElementById('price');
-  var ratioEl = document.getElementById('ratio');
-  var ratioValEl = document.getElementById('ratioVal');
-  var loanEl = document.getElementById('loanAmount');
-  var rateEl = document.getElementById('rate');
-  var yearsEl = document.getElementById('years');
-  var graceEl = document.getElementById('grace');
-  var methodToggle = document.getElementById('methodToggle');
-  var method = 'fixed';
+  var MAX_YOUTH_LOAN = 1000; // 萬元，青安額度上限
+  var PRICE_CAP = { direct: 3000, other: 2000 }; // 萬元，房價門檻（試算示意值）
 
-  var syncing = false;
+  var els = {};
+  ['county','price','age','income','married2y','minorChild','noOwnHome','neverUsed',
+   'loanAmount','years','grace','baseRate','method'].forEach(function(id){ els[id] = document.getElementById(id); });
 
-  function clampRatio(v){ return Math.min(100, Math.max(0, v)); }
-
-  function onPriceOrRatioChange(){
-    if(syncing) return;
-    syncing = true;
-    var price = parseFloat(priceEl.value) || 0;
-    var ratio = clampRatio(parseFloat(ratioEl.value) || 0);
-    ratioValEl.textContent = ratio;
-    loanEl.value = Math.round(price * ratio / 100);
-    syncing = false;
+  document.getElementById('applyMax').addEventListener('click', function(){
+    var priceWan = parseFloat(els.price.value) || 0;
+    var cap = PRICE_CAP[els.county.value];
+    var maxLoan = Math.min(MAX_YOUTH_LOAN, priceWan * 0.9, cap * 0.9);
+    els.loanAmount.value = Math.max(0, Math.round(maxLoan));
     calculate();
+  });
+
+  document.getElementById('resetDefaults').addEventListener('click', function(){
+    els.county.selectedIndex = 0;
+    els.price.value = 900;
+    els.age.value = 35;
+    els.income.value = 80;
+    els.married2y.checked = false;
+    els.minorChild.checked = false;
+    els.noOwnHome.checked = true;
+    els.neverUsed.checked = true;
+    els.loanAmount.value = 720;
+    els.years.value = 30;
+    els.grace.value = 3;
+    els.baseRate.value = 2.06;
+    els.method.value = 'step';
+    calculate();
+  });
+
+  Object.keys(els).forEach(function(id){
+    var el = els[id];
+    var evt = (el.type === 'checkbox' || el.tagName === 'SELECT') ? 'change' : 'input';
+    el.addEventListener(evt, calculate);
+  });
+
+  function rateOffsetForYear(y, method){
+    if(method !== 'step') return 0;
+    if(y <= 3) return -0.25;   // 第1-3年：完整補貼2碼
+    if(y === 4) return -0.125; // 第4年：補貼減少為1碼
+    if(y === 5) return -0.0625;// 第5年：補貼再減少為0.5碼
+    return 0;                  // 第6年起：回到原貸款利率
   }
 
-  function onLoanChange(){
-    if(syncing) return;
-    syncing = true;
-    var price = parseFloat(priceEl.value) || 0;
-    var loan = parseFloat(loanEl.value) || 0;
-    if(price > 0){
-      var ratio = clampRatio(Math.round(loan / price * 1000) / 10);
-      ratioEl.value = Math.min(100, ratio);
-      ratioValEl.textContent = ratioEl.value;
-    }
-    syncing = false;
-    calculate();
-  }
-
-  priceEl.addEventListener('input', function(){
-    // price changed: keep ratio, recompute loan amount
-    onPriceOrRatioChange();
-  });
-  ratioEl.addEventListener('input', onPriceOrRatioChange);
-  loanEl.addEventListener('input', onLoanChange);
-  rateEl.addEventListener('input', calculate);
-  yearsEl.addEventListener('input', calculate);
-  graceEl.addEventListener('change', calculate);
-
-  methodToggle.addEventListener('click', function(e){
-    var btn = e.target.closest('button');
-    if(!btn) return;
-    Array.prototype.forEach.call(methodToggle.querySelectorAll('button'), function(b){ b.classList.remove('active'); });
-    btn.classList.add('active');
-    method = btn.dataset.v;
-    document.getElementById('methodNote').textContent = method === 'fixed'
-      ? '本息均攤・每月還款金額固定'
-      : '本金均攤・每月本金固定，利息遞減，首月負擔較高';
-    calculate();
-  });
-
-  var scheduleBtn = document.getElementById('scheduleBtn');
-  var scheduleWrap = document.getElementById('scheduleWrap');
-  scheduleBtn.addEventListener('click', function(){
-    var open = scheduleWrap.classList.toggle('open');
-    scheduleBtn.textContent = open ? '收合每年還款明細 ▴' : '查看每年還款明細 ▾';
-  });
-
-  function fmtInt(n){ return Math.round(n).toLocaleString('zh-Hant-TW'); }
-  function fmtWan(n){ return (Math.round(n/1e4*10)/10).toLocaleString('zh-Hant-TW'); }
-
-  function buildSchedule(principal, annualRatePct, years, graceYears, method){
-    var r = annualRatePct/100/12;
-    var n = years*12;
-    var g = Math.min(graceYears*12, n);
-    var payN = n - g; // months with principal repayment
+  function buildSchedule(principal, baseRatePct, years, graceYears, method){
+    var n = years * 12;
+    var g = Math.min(graceYears * 12, n);
     var balance = principal;
-    var rows = []; // monthly
-
-    // fixed monthly payment for post-grace period (等額本息)
-    var fixedPayment = 0;
-    if(payN > 0){
-      fixedPayment = r === 0 ? principal/payN : principal * r * Math.pow(1+r,payN) / (Math.pow(1+r,payN)-1);
-    }
-    var principalPerMonth = payN > 0 ? principal/payN : 0;
-
-    for(var m=1; m<=n; m++){
-      var interest = balance * r;
+    var rows = [];
+    var currentPayment = 0;
+    var prevRate = null;
+    for(var m = 1; m <= n; m++){
+      var y = Math.ceil(m / 12);
+      var annualRate = baseRatePct + rateOffsetForYear(y, method);
+      var monthlyRate = annualRate / 100 / 12;
+      var interest = balance * monthlyRate;
       var principalPaid, payment;
       if(m <= g){
         principalPaid = 0;
         payment = interest;
-      } else if(method === 'fixed'){
-        payment = fixedPayment;
+        prevRate = null;
+      } else {
+        var enteringNewRegime = (m === g + 1) || (annualRate !== prevRate);
+        if(enteringNewRegime){
+          var remaining = n - m + 1;
+          currentPayment = monthlyRate === 0 ? balance / remaining
+            : balance * monthlyRate * Math.pow(1 + monthlyRate, remaining) / (Math.pow(1 + monthlyRate, remaining) - 1);
+        }
+        payment = currentPayment;
         principalPaid = payment - interest;
-      } else { // principal 均攤
-        principalPaid = principalPerMonth;
-        payment = principalPaid + interest;
+        prevRate = annualRate;
       }
       if(principalPaid > balance) principalPaid = balance;
       balance = Math.max(0, balance - principalPaid);
-      rows.push({m:m, interest:interest, principal:principalPaid, payment:payment, balance:balance});
+      rows.push({ m: m, y: y, annualRate: annualRate, interest: interest, principal: principalPaid, payment: payment, balance: balance });
     }
-    return {rows:rows, fixedPayment:fixedPayment, principalPerMonth:principalPerMonth};
+    return rows;
   }
 
-  function drawPie(principal, interest){
-    var canvas = document.getElementById('pieChart');
-    var ctx = canvas.getContext('2d');
-    var total = principal + interest;
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    var cx = canvas.width/2, cy = canvas.height/2, radius = 68;
-    if(total <= 0){ return; }
-    var start = -Math.PI/2;
-    var slices = [
-      {v:principal, color:'#C8A968'},
-      {v:interest, color:'#3a5a86'}
-    ];
-    slices.forEach(function(s){
-      var angle = (s.v/total) * Math.PI*2;
-      ctx.beginPath();
-      ctx.moveTo(cx,cy);
-      ctx.arc(cx,cy,radius,start,start+angle);
-      ctx.closePath();
-      ctx.fillStyle = s.color;
-      ctx.fill();
-      start += angle;
-    });
-    ctx.beginPath();
-    ctx.arc(cx,cy,radius*0.58,0,Math.PI*2);
-    ctx.fillStyle = '#0D2A4D';
-    ctx.fill();
-  }
+  function fmtInt(n){ return Math.round(n).toLocaleString('zh-Hant-TW'); }
+  function fmtWan(n){ return (Math.round(n * 10) / 10).toLocaleString('zh-Hant-TW'); }
 
   function calculate(){
-    var priceWan = parseFloat(priceEl.value) || 0;
-    var loanWan = parseFloat(loanEl.value) || 0;
+    var countyCat = els.county.value;
+    var priceWan = parseFloat(els.price.value) || 0;
+    var loanWan = parseFloat(els.loanAmount.value) || 0;
+    var age = parseFloat(els.age.value) || 0;
+    var years = Math.max(1, parseInt(els.years.value, 10) || 0);
+    var graceYears = Math.min(5, parseInt(els.grace.value, 10) || 0);
+    if(graceYears >= years) graceYears = Math.max(0, years - 1);
+    var baseRate = parseFloat(els.baseRate.value) || 0;
+    var method = els.method.value;
+    var priceCap = PRICE_CAP[countyCat];
+
+    var maxLoan = Math.min(MAX_YOUTH_LOAN, priceWan * 0.9, priceCap * 0.9);
+    var minDown = Math.max(0, priceWan - maxLoan);
+
+    document.getElementById('statMaxLoan').textContent = fmtWan(maxLoan) + ' 萬';
+    document.getElementById('statMinDown').textContent = fmtWan(minDown) + ' 萬';
+
     var principal = loanWan * 1e4;
-    var annualRate = parseFloat(rateEl.value) || 0;
-    var years = parseInt(yearsEl.value, 10) || 0;
-    var graceYears = parseInt(graceEl.value, 10) || 0;
-    if(graceYears >= years) graceYears = Math.max(0, years-1);
+    var rows = buildSchedule(principal, baseRate, years, graceYears, method);
+    var totalInterest = rows.reduce(function(a, r){ return a + r.interest; }, 0);
 
-    var result = buildSchedule(principal, annualRate, years, graceYears, method);
-    var rows = result.rows;
+    var graceLabel = document.getElementById('graceLabel');
+    var graceMonthlyEl = document.getElementById('graceMonthly');
+    var postGraceLabel = document.getElementById('postGraceLabel');
+    var postGraceMonthlyEl = document.getElementById('postGraceMonthly');
+    var postGraceNote = document.getElementById('postGraceNote');
 
-    var totalInterest = rows.reduce(function(a,r){ return a+r.interest; }, 0);
-    var totalPayment = principal + totalInterest;
+    if(graceYears > 0 && rows.length){
+      graceLabel.textContent = '寬限期月付（第1-' + graceYears + '年）';
+      graceMonthlyEl.textContent = fmtInt(rows[0].payment);
+      var firstPostGraceIdx = graceYears * 12;
+      var postPayment = rows[firstPostGraceIdx] ? rows[firstPostGraceIdx].payment : 0;
+      postGraceLabel.textContent = '寬限期後月付';
+      postGraceMonthlyEl.textContent = fmtInt(postPayment);
+      postGraceNote.textContent = '以第 ' + (graceYears + 1) + ' 年利率 ' + (baseRate + rateOffsetForYear(graceYears + 1, method)).toFixed(3) + '% 與剩餘 ' + (years - graceYears) + ' 年估算。';
+    } else {
+      graceLabel.textContent = '未設寬限期';
+      graceMonthlyEl.textContent = '－';
+      postGraceLabel.textContent = '每月還款金額';
+      postGraceMonthlyEl.textContent = fmtInt(rows.length ? rows[0].payment : 0);
+      postGraceNote.textContent = '以第 1 年利率 ' + (baseRate + rateOffsetForYear(1, method)).toFixed(3) + '% 起算。';
+    }
 
-    var graceMonthly = graceYears > 0 && rows.length ? rows[0].payment : 0;
-    var postGraceMonthly = method === 'fixed'
-      ? result.fixedPayment
-      : (rows.length > graceYears*12 ? rows[graceYears*12].payment : 0);
+    // 房價門檻使用率
+    var ratio = priceCap > 0 ? (priceWan / priceCap) : 0;
+    var pct = Math.min(999, Math.round(ratio * 100));
+    document.getElementById('priceBar').style.width = Math.min(100, pct) + '%';
+    document.getElementById('priceBarPct').textContent = pct + '%';
+    var priceBarNote = document.getElementById('priceBarNote');
+    priceBarNote.textContent = (countyCat === 'direct' ? '直轄市' : '其他縣市') + ' 青安3.0房屋總價門檻：' + fmtWan(priceCap) + ' 萬；目前輸入 ' + fmtWan(priceWan) + ' 萬。';
 
-    document.getElementById('monthlyMain').textContent = fmtInt(postGraceMonthly);
-    document.getElementById('monthlyLabel').textContent = graceYears > 0 ? '每月還款金額（寬限期後）' : '每月還款金額';
-    document.getElementById('monthlyGraceLine').textContent = graceYears > 0
-      ? '寬限期內（前 ' + graceYears + ' 年）每月僅繳息 ' + fmtInt(graceMonthly) + ' 元'
-      : (method === 'principal' ? '首月 ' + fmtInt(rows[0].payment) + ' 元，逐月遞減' : '');
+    var statusBadge = document.getElementById('statusBadge');
+    var statusNote = document.getElementById('statusNote');
+    if(ratio > 1){
+      statusBadge.className = 'badge badge--bad';
+      statusBadge.textContent = '超出總價門檻';
+      statusNote.textContent = '房屋總價已超出青安貸款總價門檻，可能無法適用青安優惠利率，請洽承辦銀行確認。';
+    } else if(ratio >= 0.85){
+      statusBadge.className = 'badge badge--warn';
+      statusBadge.textContent = '接近上限';
+      statusNote.textContent = '主要條件通過，惟房屋總價已接近門檻上限，下一步可向公股銀行確認實際核貸。';
+    } else {
+      statusBadge.className = 'badge badge--ok';
+      statusBadge.textContent = '額度充足';
+      statusNote.textContent = '主要條件通過，下一步可向公股銀行確認實際核貨。';
+    }
 
-    document.getElementById('statLoan').textContent = fmtWan(principal) + ' 萬';
-    document.getElementById('statInterest').textContent = fmtWan(totalInterest) + ' 萬';
-    document.getElementById('statTotal').textContent = fmtWan(totalPayment) + ' 萬';
-    var ratioNow = priceWan > 0 ? Math.round(loanWan/priceWan*1000)/10 : 0;
-    document.getElementById('statRatio').textContent = ratioNow + '%';
+    // 補貼退場付款節奏卡片
+    var stages = [
+      { label: '第 1-3 年', y: 1, desc: '完整補貼 2 碼' },
+      { label: '第 4 年', y: 4, desc: '補貼減少半碼' },
+      { label: '第 5 年', y: 5, desc: '再減少半碼' },
+      { label: '第 6 年起', y: 6, desc: '回到原貸款利率' }
+    ];
+    var stageWrap = document.getElementById('stageCards');
+    stageWrap.innerHTML = '';
+    stages.forEach(function(s){
+      var idx = Math.min(rows.length, s.y * 12) - 1;
+      if(idx < 0) idx = 0;
+      var row = rows[idx] || rows[rows.length - 1];
+      var div = document.createElement('div');
+      div.className = 'stage';
+      div.innerHTML = '<div class="k">' + s.label + '</div>' +
+        '<div class="v">' + (row ? fmtInt(row.payment) : '－') + '</div>' +
+        '<div class="r">月付，利率 ' + (row ? row.annualRate.toFixed(3) : '－') + '%</div>' +
+        '<div class="d">' + s.desc + '</div>';
+      stageWrap.appendChild(div);
+    });
 
-    document.getElementById('legendPrincipal').textContent = fmtWan(principal) + ' 萬 (' + (totalPayment>0?Math.round(principal/totalPayment*100):0) + '%)';
-    document.getElementById('legendInterest').textContent = fmtWan(totalInterest) + ' 萬 (' + (totalPayment>0?Math.round(totalInterest/totalPayment*100):0) + '%)';
-    drawPie(principal, totalInterest);
+    // 資格檢核
+    var checks = [];
+    if(age < 20 || age > 45){
+      checks.push({ ok: false, text: '借款人年齡建議介於 20–45 歲之間，超出範圍請洽承辦銀行確認資格認定。' });
+    }
+    if(!els.noOwnHome.checked){
+      checks.push({ ok: false, text: '需本人／配偶／未成年子女均無自有住宅，才符合青安貸款資格。' });
+    }
+    if(!els.neverUsed.checked){
+      checks.push({ ok: false, text: '需未曾使用過青安或農安貸款，才符合本次申請資格。' });
+    }
+    if(ratio > 1){
+      checks.push({ ok: false, text: '房屋總價超出所在縣市之青安3.0房價門檻。' });
+    }
+    if(loanWan > maxLoan + 0.01){
+      checks.push({ ok: false, text: '申請貸款金額（' + fmtWan(loanWan) + ' 萬）超出估算最高可貸（' + fmtWan(maxLoan) + ' 萬），建議點選「套用最高可貸」調整。' });
+    }
 
-    // yearly schedule
-    var tbody = document.getElementById('scheduleBody');
-    tbody.innerHTML = '';
-    for(var y=0; y<years; y++){
-      var yearRows = rows.slice(y*12, y*12+12);
+    var eligBox = document.getElementById('eligibilityBox');
+    eligBox.innerHTML = '';
+    if(checks.length === 0){
+      var okDiv = document.createElement('div');
+      okDiv.className = 'elig elig--ok';
+      okDiv.textContent = '以目前輸入條件，通過主要政策門檻與額度上限檢核。';
+      eligBox.appendChild(okDiv);
+    } else {
+      checks.forEach(function(c){
+        var d = document.createElement('div');
+        d.className = 'elig elig--bad';
+        d.textContent = c.text;
+        eligBox.appendChild(d);
+      });
+    }
+    var infoDiv = document.createElement('div');
+    infoDiv.className = 'elig elig--warn';
+    infoDiv.textContent = '一般家庭青安貸款最高額度為 1,000 萬元；若符合新婚或育兒等加碼條件，前3年可獲得最大2碼優惠利率，實際依承辦銀行核定為準。';
+    eligBox.appendChild(infoDiv);
+
+    // 年度摘要（前10年，或至貸款年限為止）
+    var body = document.getElementById('summaryBody');
+    body.innerHTML = '';
+    var showYears = Math.min(10, years);
+    for(var y = 0; y < showYears; y++){
+      var yearRows = rows.slice(y * 12, y * 12 + 12);
       if(!yearRows.length) break;
-      var yp = yearRows.reduce(function(a,r){return a+r.principal;},0);
-      var yi = yearRows.reduce(function(a,r){return a+r.interest;},0);
-      var yend = yearRows[yearRows.length-1].balance;
+      var yi = yearRows.reduce(function(a, r){ return a + r.interest; }, 0);
+      var lastRow = yearRows[yearRows.length - 1];
       var tr = document.createElement('tr');
-      tr.innerHTML = '<td>第 ' + (y+1) + ' 年</td><td>' + fmtInt(yp) + '</td><td>' + fmtInt(yi) + '</td><td>' + fmtInt(yp+yi) + '</td><td>' + fmtInt(yend) + '</td>';
-      tbody.appendChild(tr);
+      tr.innerHTML = '<td>第 ' + (y + 1) + ' 年</td>' +
+        '<td>' + lastRow.annualRate.toFixed(3) + '%</td>' +
+        '<td>' + fmtInt(lastRow.payment) + '</td>' +
+        '<td>' + fmtInt(yi) + '</td>' +
+        '<td>' + fmtInt(lastRow.balance) + '</td>';
+      body.appendChild(tr);
     }
   }
 
