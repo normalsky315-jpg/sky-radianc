@@ -18,17 +18,17 @@
     --char:#0D2A4D;--char-2:#1A3F6E;--line:rgba(28,26,23,.14);
     --blue-deep:#122F5C;--blue-mid:#245A96;--blue-light:#6FA0D6;
     --ok:#3F7A57;--ok-bg:#EAF3ED;--warn:#B6924E;--warn-bg:#F7EFDE;--bad:#A6473F;--bad-bg:#F8EAE8;
-    --serif:"Noto Serif TC",serif;--sans:"Noto Sans TC",sans-serif;--latin:"Cormorant Garamond",serif;
+    --serif:"Noto Serif TC",serif;--sans:"Noto Sans TC",sans-serif;--num:"Noto Sans TC",sans-serif;
     --maxw:1160px;
   }
   *{box-sizing:border-box;margin:0;padding:0}
-  html{scroll-behavior:smooth}
+  html{scroll-behavior:smooth;font-size:118%}
   body{font-family:var(--sans);color:var(--ink);background:var(--cream);font-weight:300;line-height:1.85;-webkit-font-smoothing:antialiased}
   a{color:inherit;text-decoration:none}
   .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
-  .eyebrow{font-family:var(--sans);font-size:.72rem;font-weight:500;letter-spacing:.42em;text-transform:uppercase;color:var(--gold)}
+  .eyebrow{font-family:var(--sans);font-size:.8rem;font-weight:500;letter-spacing:.42em;text-transform:uppercase;color:var(--gold)}
   h1,h2,h3{font-family:var(--serif);font-weight:600;line-height:1.28;letter-spacing:.02em}
-  .btn{display:inline-flex;align-items:center;gap:.6em;font-family:var(--sans);font-weight:500;font-size:.95rem;letter-spacing:.16em;padding:15px 30px;border:1px solid var(--gold);color:var(--ink);background:transparent;cursor:pointer;transition:background .3s,color .3s}
+  .btn{display:inline-flex;align-items:center;gap:.6em;font-family:var(--sans);font-weight:500;font-size:1.02rem;letter-spacing:.16em;padding:15px 30px;border:1px solid var(--gold);color:var(--ink);background:transparent;cursor:pointer;transition:background .3s,color .3s}
   .btn:hover{background:var(--gold);color:#fff}
   .btn--solid{background:var(--gold);color:#fff;border-color:var(--gold)}
   .btn--solid:hover{background:var(--ink);border-color:var(--ink)}
@@ -37,8 +37,8 @@
   /* top bar */
   .topbar{background:var(--char);color:#fff;padding:16px 0}
   .topbar .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
-  .topbar__brand{font-family:var(--serif);font-weight:700;letter-spacing:.14em;font-size:1.15rem}
-  .topbar__back{font-size:.82rem;letter-spacing:.08em;color:var(--gold-soft);border-bottom:1px solid rgba(200,169,104,.5);padding-bottom:2px}
+  .topbar__brand{font-family:var(--serif);font-weight:700;letter-spacing:.14em;font-size:1.25rem}
+  .topbar__back{font-size:.92rem;letter-spacing:.08em;color:var(--gold-soft);border-bottom:1px solid rgba(200,169,104,.5);padding-bottom:2px}
   .topbar__back:hover{color:#fff;border-color:#fff}
 
   /* brand hero band — blue gradient banner, echoes the internal lunch-system header */
@@ -51,13 +51,13 @@
   .band__inner{position:relative;z-index:2;max-width:var(--maxw);margin:0 auto;text-align:right}
   .band__title{color:#fff;font-size:clamp(1.9rem,4.2vw,2.7rem);letter-spacing:.12em}
   .band__rule{width:54px;height:2px;background:var(--gold-soft);margin:16px 0 16px auto}
-  .band__tag{color:rgba(255,255,255,.92);font-size:.9rem;letter-spacing:.32em}
+  .band__tag{color:rgba(255,255,255,.92);font-size:1rem;letter-spacing:.32em}
   .band__zigzag{position:absolute;left:0;right:0;bottom:0;height:34px;background:var(--cream);
     clip-path:polygon(0% 100%,0% 40%,8.33% 100%,16.66% 40%,25% 100%,33.33% 40%,41.66% 100%,50% 40%,58.33% 100%,66.66% 40%,75% 100%,83.33% 40%,91.66% 100%,100% 40%,100% 100%);}
 
   .hero{padding:44px 0 8px;text-align:center}
-  .hero h1{font-size:clamp(1.5rem,3.6vw,2.1rem)}
-  .hero .lede{max-width:56ch;margin:16px auto 0;color:var(--ink-soft);font-size:1rem}
+  .hero h1{font-size:clamp(1.7rem,3.8vw,2.3rem)}
+  .hero .lede{max-width:56ch;margin:16px auto 0;color:var(--ink-soft);font-size:1.1rem}
 
   .section{padding:30px 0 96px}
 
@@ -66,36 +66,36 @@
   @media(min-width:960px){.calc{grid-template-columns:360px 1fr}}
 
   .panel{background:#fff;border:1px solid var(--line);padding:28px clamp(18px,3vw,32px)}
-  .panel h2{font-size:1.15rem;margin-bottom:2px}
+  .panel h2{font-size:1.25rem;margin-bottom:2px}
 
   .group{margin-bottom:26px}
-  .group__title{font-size:.78rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid var(--line)}
+  .group__title{font-size:.86rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid var(--line)}
 
   .field{margin-bottom:18px}
   .field:last-child{margin-bottom:0}
-  .field__label{display:block;font-size:.84rem;font-weight:500;color:var(--ink);margin-bottom:8px}
-  .field__label .unit{color:var(--stone-deep);font-weight:400;font-size:.78rem}
+  .field__label{display:block;font-size:.92rem;font-weight:500;color:var(--ink);margin-bottom:8px}
+  .field__label .unit{color:var(--stone-deep);font-weight:400;font-size:.84rem}
 
   .field-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 
-  .input,.select{width:100%;border:1px solid var(--line);background:var(--cream);padding:11px 13px;font-family:var(--sans);font-size:.95rem;color:var(--ink)}
-  .input{font-family:var(--latin);font-weight:600;font-size:1.02rem}
+  .input,.select{width:100%;border:1px solid var(--line);background:var(--cream);padding:12px 13px;font-family:var(--sans);font-size:1.02rem;color:var(--ink)}
+  .input{font-family:var(--num);font-variant-numeric:tabular-nums;font-weight:600;font-size:1.1rem}
   .input:focus,.select:focus{outline:none;border-color:var(--gold)}
   .select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--gold) 50%),linear-gradient(135deg,var(--gold) 50%,transparent 50%);background-position:calc(100% - 18px) center,calc(100% - 13px) center;background-size:5px 5px,5px 5px;background-repeat:no-repeat}
 
-  .check{display:flex;align-items:flex-start;gap:9px;margin-bottom:12px;font-size:.84rem;color:var(--ink-soft);cursor:pointer}
+  .check{display:flex;align-items:flex-start;gap:9px;margin-bottom:12px;font-size:.92rem;color:var(--ink-soft);cursor:pointer}
   .check:last-child{margin-bottom:0}
-  .check input{margin-top:3px;accent-color:var(--gold);width:15px;height:15px;flex-shrink:0}
+  .check input{margin-top:3px;accent-color:var(--gold);width:16px;height:16px;flex-shrink:0}
 
   .btn-row{display:flex;gap:10px;margin-top:24px}
-  .btn-row .btn{flex:1;padding:13px 10px;font-size:.8rem;letter-spacing:.08em;justify-content:center}
+  .btn-row .btn{flex:1;padding:13px 10px;font-size:.86rem;letter-spacing:.08em;justify-content:center}
   .btn-ghost{border-color:var(--line);color:var(--ink-soft)}
   .btn-ghost:hover{background:var(--cream-2);color:var(--ink);}
 
   /* results panel */
   .result-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:6px}
-  .result-note{color:var(--ink-soft);font-size:.85rem;margin-bottom:24px}
-  .badge{font-size:.76rem;letter-spacing:.05em;padding:7px 14px;border-radius:20px;white-space:nowrap;font-weight:500}
+  .result-note{color:var(--ink-soft);font-size:.94rem;margin-bottom:24px}
+  .badge{font-size:.86rem;letter-spacing:.05em;padding:7px 14px;border-radius:20px;white-space:nowrap;font-weight:500}
   .badge--ok{background:var(--ok-bg);color:var(--ok)}
   .badge--warn{background:var(--warn-bg);color:var(--warn)}
   .badge--bad{background:var(--bad-bg);color:var(--bad)}
@@ -103,57 +103,57 @@
   .stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:22px}
   @media(max-width:560px){.stat-row{grid-template-columns:1fr 1fr}}
   .stat{background:var(--cream);border:1px solid var(--line);padding:16px}
-  .stat .k{font-size:.76rem;color:var(--stone-deep)}
-  .stat .v{font-family:var(--latin);font-size:1.35rem;font-weight:600;margin-top:6px;color:var(--char)}
+  .stat .k{font-size:.86rem;color:var(--stone-deep)}
+  .stat .v{font-family:var(--num);font-variant-numeric:tabular-nums;font-size:1.5rem;font-weight:700;margin-top:6px;color:var(--char)}
 
   .pay-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px}
   @media(max-width:560px){.pay-row{grid-template-columns:1fr}}
   .pay-card{border:1px solid var(--gold);background:var(--cream-2);padding:18px}
-  .pay-card .k{font-size:.8rem;color:var(--ink-soft)}
-  .pay-card .v{font-family:var(--latin);font-size:1.7rem;font-weight:600;color:var(--char);margin-top:6px}
-  .pay-card .v small{font-family:var(--sans);font-size:.85rem;font-weight:400;color:var(--ink-soft);margin-left:4px}
-  .pay-card .d{font-size:.78rem;color:var(--stone-deep);margin-top:8px;line-height:1.6}
+  .pay-card .k{font-size:.9rem;color:var(--ink-soft)}
+  .pay-card .v{font-family:var(--num);font-variant-numeric:tabular-nums;font-size:1.9rem;font-weight:700;color:var(--char);margin-top:6px}
+  .pay-card .v small{font-family:var(--sans);font-size:.92rem;font-weight:400;color:var(--ink-soft);margin-left:4px}
+  .pay-card .d{font-size:.86rem;color:var(--stone-deep);margin-top:8px;line-height:1.6}
 
   .bar-block{margin-bottom:26px}
-  .bar-block .lbl{display:flex;justify-content:space-between;font-size:.86rem;margin-bottom:8px}
-  .bar-block .lbl b{font-family:var(--latin);color:var(--char)}
+  .bar-block .lbl{display:flex;justify-content:space-between;font-size:.94rem;margin-bottom:8px}
+  .bar-block .lbl b{font-family:var(--num);font-variant-numeric:tabular-nums;color:var(--char)}
   .bar-track{height:8px;background:var(--line);border-radius:4px;overflow:hidden}
   .bar-fill{height:100%;background:linear-gradient(90deg,var(--gold-soft),var(--gold));border-radius:4px;transition:width .3s}
-  .bar-note{font-size:.78rem;color:var(--stone-deep);margin-top:8px}
+  .bar-note{font-size:.86rem;color:var(--stone-deep);margin-top:8px}
 
-  .stage-title{font-size:.95rem;font-weight:500;margin-bottom:14px;color:var(--ink)}
+  .stage-title{font-size:1.05rem;font-weight:500;margin-bottom:14px;color:var(--ink)}
   .stage-row{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:26px}
   @media(max-width:900px){.stage-row{grid-template-columns:1fr 1fr 1fr}}
   @media(max-width:560px){.stage-row{grid-template-columns:1fr 1fr}}
   .stage{background:var(--cream);border:1px solid var(--line);padding:14px}
-  .stage .k{font-size:.74rem;color:var(--stone-deep)}
-  .stage .v{font-family:var(--latin);font-size:1.15rem;font-weight:600;color:var(--char);margin-top:6px}
-  .stage .r{font-size:.74rem;color:var(--gold);margin-top:2px}
-  .stage .d{font-size:.72rem;color:var(--ink-soft);margin-top:6px;line-height:1.5}
+  .stage .k{font-size:.84rem;color:var(--stone-deep)}
+  .stage .v{font-family:var(--num);font-variant-numeric:tabular-nums;font-size:1.3rem;font-weight:700;color:var(--char);margin-top:6px}
+  .stage .r{font-size:.84rem;color:var(--gold);margin-top:2px}
+  .stage .d{font-size:.82rem;color:var(--ink-soft);margin-top:6px;line-height:1.5}
 
-  .elig-title{font-size:.95rem;font-weight:500;margin-bottom:14px}
-  .elig{padding:14px 16px;font-size:.84rem;line-height:1.7;margin-bottom:10px}
+  .elig-title{font-size:1.05rem;font-weight:500;margin-bottom:14px}
+  .elig{padding:14px 16px;font-size:.94rem;line-height:1.7;margin-bottom:10px}
   .elig:last-child{margin-bottom:0}
   .elig--ok{background:var(--ok-bg);color:var(--ok)}
   .elig--warn{background:var(--warn-bg);color:#8a6a30}
   .elig--bad{background:var(--bad-bg);color:var(--bad)}
 
   .table-wrap{margin-top:28px;border:1px solid var(--line);overflow-x:auto}
-  table{width:100%;border-collapse:collapse;font-size:.84rem;min-width:520px}
-  th,td{padding:11px 14px;text-align:right;white-space:nowrap}
-  th{background:var(--char);color:var(--gold-soft);font-weight:500;font-size:.76rem;letter-spacing:.03em}
+  table{width:100%;border-collapse:collapse;font-size:.94rem;font-variant-numeric:tabular-nums;min-width:560px}
+  th,td{padding:12px 14px;text-align:right;white-space:nowrap}
+  th{background:var(--char);color:var(--gold-soft);font-weight:500;font-size:.86rem;letter-spacing:.03em}
   td:first-child,th:first-child{text-align:left}
   tr:nth-child(even) td{background:var(--cream)}
   tr td{border-bottom:1px solid var(--line)}
 
-  .disclaimer{max-width:var(--maxw);margin:40px auto 0;padding:0 24px;font-size:.78rem;color:var(--stone-deep);line-height:1.9}
+  .disclaimer{max-width:var(--maxw);margin:40px auto 0;padding:0 24px;font-size:.88rem;color:var(--stone-deep);line-height:1.9}
 
   .cta-band{background:var(--char-2);color:#fff;padding:52px 0;text-align:center}
-  .cta-band h2{color:#fff;font-size:1.4rem}
+  .cta-band h2{color:#fff;font-size:1.5rem}
   .cta-band p{color:rgba(255,255,255,.75);margin-top:10px}
   .cta-band .btns{margin-top:24px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
 
-  footer.foot{background:var(--ink);color:rgba(255,255,255,.65);padding:26px 0;text-align:center;font-size:.8rem}
+  footer.foot{background:var(--ink);color:rgba(255,255,255,.65);padding:26px 0;text-align:center;font-size:.9rem}
   footer.foot a{color:var(--gold-soft)}
 </style>
 </head>
@@ -193,11 +193,10 @@
         <div class="field">
           <label class="field__label" for="county">縣市區域</label>
           <select class="select" id="county">
-            <option value="kaohsiung" selected>高雄市</option>
+            <option value="other" selected>其他縣市（含高雄市）</option>
             <option value="taipei">台北市</option>
             <option value="newtaipei">新北市</option>
             <option value="hsinchu">新竹縣市</option>
-            <option value="other">其他縣市</option>
           </select>
         </div>
         <div class="field">
@@ -248,8 +247,9 @@
         <div class="field">
           <label class="field__label" for="method">計息方式</label>
           <select class="select" id="method">
-            <option value="step" selected>階梯式（青安補貼遞減）</option>
-            <option value="flat">一段式機動（不含青安補貼）</option>
+            <option value="single" selected>一段式機動</option>
+            <option value="two-stage">二段式機動</option>
+            <option value="hybrid">混合式固定</option>
           </select>
         </div>
       </div>
@@ -343,8 +343,8 @@
 <script>
 (function(){
   var LTV_MAX = 0.8; // 貸款成數最高8成
-  var PRICE_CAP = { taipei: 3500, newtaipei: 2500, hsinchu: 2500, kaohsiung: 2000, other: 2000 }; // 萬元，青安3.0房屋總價上限
-  var PRICE_CAP_LABEL = { taipei: '台北市', newtaipei: '新北市', hsinchu: '新竹縣市', kaohsiung: '高雄市（其餘縣市）', other: '其他縣市' };
+  var PRICE_CAP = { taipei: 3500, newtaipei: 2500, hsinchu: 2500, other: 2000 }; // 萬元，青安3.0房屋總價上限
+  var PRICE_CAP_LABEL = { taipei: '台北市', newtaipei: '新北市', hsinchu: '新竹縣市', other: '其他縣市' };
 
   var els = {};
   ['county','price','age','income','married2y','minorChild','noOwnHome','neverUsed',
@@ -380,7 +380,7 @@
     els.years.value = 30;
     els.grace.value = 3;
     els.baseRate.value = 2.275;
-    els.method.value = 'step';
+    els.method.value = 'single';
     calculate();
   });
 
@@ -390,8 +390,8 @@
     el.addEventListener(evt, calculate);
   });
 
-  function rateOffsetForYear(y, method){
-    if(method !== 'step') return 0;
+  // 青安3.0利息補貼為政府政策，不論銀行採一段式/二段式/混合式計息，前6年皆適用同一套遞減規則
+  function rateOffsetForYear(y){
     if(y <= 3) return -0.5;    // 第1-3年：銀行減收半碼(0.125%)+政府補貼1.5碼(0.375%)＝完整2碼
     if(y === 4) return -0.375; // 第4年：補貼遞減半碼
     if(y === 5) return -0.25;  // 第5年：再遞減半碼
@@ -399,7 +399,7 @@
     return 0;                  // 第7年起：補貼期滿，回到原貸款利率
   }
 
-  function buildSchedule(principal, baseRatePct, years, graceYears, method){
+  function buildSchedule(principal, baseRatePct, years, graceYears){
     var n = years * 12;
     var g = Math.min(graceYears * 12, n);
     var balance = principal;
@@ -408,7 +408,7 @@
     var prevRate = null;
     for(var m = 1; m <= n; m++){
       var y = Math.ceil(m / 12);
-      var annualRate = baseRatePct + rateOffsetForYear(y, method);
+      var annualRate = baseRatePct + rateOffsetForYear(y);
       var monthlyRate = annualRate / 100 / 12;
       var interest = balance * monthlyRate;
       var principalPaid, payment;
@@ -446,7 +446,7 @@
     var graceYears = Math.min(5, parseInt(els.grace.value, 10) || 0);
     if(graceYears >= years) graceYears = Math.max(0, years - 1);
     var baseRate = parseFloat(els.baseRate.value) || 0;
-    var method = els.method.value;
+    var methodLabel = els.method.options[els.method.selectedIndex].text;
     var priceCap = PRICE_CAP[countyCat];
     var loanCap = loanCapByStatus();
 
@@ -458,7 +458,7 @@
     document.getElementById('statMinDown').textContent = fmtWan(minDown) + ' 萬';
 
     var principal = loanWan * 1e4;
-    var rows = buildSchedule(principal, baseRate, years, graceYears, method);
+    var rows = buildSchedule(principal, baseRate, years, graceYears);
     var totalInterest = rows.reduce(function(a, r){ return a + r.interest; }, 0);
 
     var graceLabel = document.getElementById('graceLabel');
@@ -474,13 +474,13 @@
       var postPayment = rows[firstPostGraceIdx] ? rows[firstPostGraceIdx].payment : 0;
       postGraceLabel.textContent = '寬限期後月付';
       postGraceMonthlyEl.textContent = fmtInt(postPayment);
-      postGraceNote.textContent = '以第 ' + (graceYears + 1) + ' 年利率 ' + (baseRate + rateOffsetForYear(graceYears + 1, method)).toFixed(3) + '% 與剩餘 ' + (years - graceYears) + ' 年估算。';
+      postGraceNote.textContent = methodLabel + '・以第 ' + (graceYears + 1) + ' 年利率 ' + (baseRate + rateOffsetForYear(graceYears + 1)).toFixed(3) + '% 與剩餘 ' + (years - graceYears) + ' 年估算。';
     } else {
       graceLabel.textContent = '未設寬限期';
       graceMonthlyEl.textContent = '－';
       postGraceLabel.textContent = '每月還款金額';
       postGraceMonthlyEl.textContent = fmtInt(rows.length ? rows[0].payment : 0);
-      postGraceNote.textContent = '以第 1 年利率 ' + (baseRate + rateOffsetForYear(1, method)).toFixed(3) + '% 起算。';
+      postGraceNote.textContent = methodLabel + '・以第 1 年利率 ' + (baseRate + rateOffsetForYear(1)).toFixed(3) + '% 起算。';
     }
 
     // 房價門檻使用率
