@@ -102,8 +102,9 @@
   .badge--warn{background:var(--warn-bg);color:var(--warn)}
   .badge--bad{background:var(--bad-bg);color:var(--bad)}
 
-  .stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:22px}
-  @media(max-width:560px){.stat-row{grid-template-columns:1fr 1fr}}
+  .stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px}
+  @media(max-width:760px){.stat-row{grid-template-columns:1fr 1fr}}
+  @media(max-width:380px){.stat-row{grid-template-columns:1fr}}
   .stat{background:var(--cream);border:1px solid var(--line);padding:16px}
   .stat .k{font-size:.86rem;color:var(--stone-deep)}
   .stat .v{font-family:var(--num);font-variant-numeric:tabular-nums;font-size:1.5rem;font-weight:700;margin-top:6px;color:var(--char)}
@@ -125,7 +126,8 @@
   .bar-note{font-size:.86rem;color:var(--stone-deep);margin-top:8px}
 
   .stage-title{font-size:1.05rem;font-weight:500;margin-bottom:14px;color:var(--ink)}
-  .stage-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:26px}
+  .stage-row{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:26px}
+  @media(max-width:900px){.stage-row{grid-template-columns:1fr 1fr 1fr}}
   @media(max-width:560px){.stage-row{grid-template-columns:1fr 1fr}}
   .stage{background:var(--cream);border:1px solid var(--line);padding:14px}
   .stage .k{font-size:.84rem;color:var(--stone-deep)}
@@ -169,6 +171,7 @@
   <p class="eyebrow">青安貸款 3.0 試算</p>
   <h1>貸款試算</h1>
   <p class="lede">輸入總價、身份條件、貸款年限與寬限期，試算青安貸款3.0的額度上限、寬限期月付、補貼退場付款節奏與資格檢核。以下結果僅供參考，實際核貸依承辦銀行審核為準。</p>
+  <p class="lede" style="font-size:.82rem;margin-top:10px">資料更新：2026-08-01・資料來源：<a href="https://www.mof.gov.tw/singlehtml/384fb3077bb349ea973e7fc6f13b6974?cntId=482aa9c142b34abc83750cb64c15cb11" target="_blank" rel="noopener" style="text-decoration:underline;color:var(--gold)">財政部青安貸款3.0說明</a></p>
 </div>
 
 <section class="section wrap">
@@ -208,6 +211,8 @@
         <label class="check"><input type="checkbox" id="minorChild"> 育有未成年子女</label>
         <label class="check"><input type="checkbox" id="noOwnHome" checked> 本人／配偶／未成年子女無自有住宅</label>
         <label class="check"><input type="checkbox" id="neverUsed" checked> 未曾使用過青安或農安貸款</label>
+        <label class="check"><input type="checkbox" id="selfOccupy" checked> 本次購屋確實供本人或家庭自住</label>
+        <p class="field-hint">青安貸款3.0要求自住切結，若查獲非自住使用，將被追回已補貼之利息。</p>
       </div>
 
       <div class="group">
@@ -228,10 +233,11 @@
             <input class="input" type="number" id="grace" value="3" min="0" max="5" step="1">
           </div>
           <div class="field">
-            <label class="field__label" for="baseRate">起跳利率 <span class="unit">（%）</span></label>
+            <label class="field__label" for="baseRate">補貼後起始利率 <span class="unit">（%）</span></label>
             <input class="input" type="number" id="baseRate" value="1.775" min="0" max="10" step="0.001">
           </div>
         </div>
+        <p class="field-hint" id="graceWarning" style="display:none">⚠ 寬限期內僅繳息、不還本金，本金遞延攤還將墊高總利息支出，寬限期愈長，總利息通常愈高。</p>
         <div class="field">
           <label class="field__label" for="method">計息方式</label>
           <select class="select" id="method">
@@ -258,6 +264,7 @@
         <span class="badge" id="statusBadge">－</span>
       </div>
       <p class="result-note" id="statusNote">請輸入條件以開始試算。</p>
+      <div id="inputErrorBox" style="display:none"></div>
 
       <div class="stat-row">
         <div class="stat">
@@ -269,10 +276,15 @@
           <div class="v" id="statMaxLoan">0 萬</div>
         </div>
         <div class="stat">
-          <div class="k">最低自備款</div>
+          <div class="k">估算自備款（未含稅費）</div>
           <div class="v" id="statMinDown">0 萬</div>
         </div>
+        <div class="stat">
+          <div class="k">貸款期間總利息</div>
+          <div class="v" id="statTotalInterest">0 萬</div>
+        </div>
       </div>
+      <p class="bar-note" style="margin-top:-14px;margin-bottom:22px">以上為估算金額，未包含契稅、代書費、規費、裝潢與保險等費用；實際核貸額度、成數與費用以銀行鑑價及個案條件為準。</p>
 
       <div class="pay-row">
         <div class="pay-card">
@@ -325,7 +337,7 @@
   var PRICE_CAP_LABEL = { taipei: '台北市', newtaipei: '新北市／新竹縣市', other: '其他縣市' };
 
   var els = {};
-  ['county','price','age','income','married2y','minorChild','noOwnHome','neverUsed',
+  ['county','price','age','income','married2y','minorChild','noOwnHome','neverUsed','selfOccupy',
    'loanAmount','years','grace','baseRate','method'].forEach(function(id){ els[id] = document.getElementById(id); });
 
   function loanCapByStatus(){
@@ -336,6 +348,33 @@
 
   function computeMaxLoan(priceWan){
     return Math.min(loanCapByStatus(), priceWan * LTV_MAX);
+  }
+
+  // 欄位驗證：回傳 {errors, values}，values 為修正到合理範圍後可安全用於試算的數字
+  function validateInputs(){
+    var errors = [];
+    function checkRange(raw, label, min, max, unit){
+      var v = parseFloat(raw);
+      if(raw === '' || isNaN(v)){
+        errors.push(label + '請輸入數字。');
+        return min;
+      }
+      if(v < min || v > max){
+        errors.push(label + '請輸入 ' + min + ' 至 ' + max + (unit || '') + ' 之間的數值（目前輸入 ' + raw + '）。');
+        return Math.min(Math.max(v, min), max);
+      }
+      return v;
+    }
+    var values = {
+      price: checkRange(els.price.value, '買賣總價／鑑價', 1, 100000, '萬元'),
+      age: checkRange(els.age.value, '借款人年齡', 18, 99, '歲'),
+      income: checkRange(els.income.value, '本人年所得', 0, 100000, '萬元'),
+      loanAmount: checkRange(els.loanAmount.value, '貸款金額', 1, 100000, '萬元'),
+      years: checkRange(els.years.value, '貸款年限', 1, 40, '年'),
+      grace: checkRange(els.grace.value, '寬限期', 0, 5, '年'),
+      baseRate: checkRange(els.baseRate.value, '補貼後起始利率', 0, 10, '%')
+    };
+    return { errors: errors, values: values };
   }
 
   document.getElementById('applyMax').addEventListener('click', function(){
@@ -354,6 +393,7 @@
     els.minorChild.checked = false;
     els.noOwnHome.checked = true;
     els.neverUsed.checked = true;
+    els.selfOccupy.checked = true;
     els.loanAmount.value = 720;
     els.years.value = 30;
     els.grace.value = 3;
@@ -425,14 +465,25 @@
   function fmtWan(n){ return (Math.round(n * 10) / 10).toLocaleString('zh-Hant-TW'); }
 
   function calculate(){
+    var validation = validateInputs();
+    var errorBox = document.getElementById('inputErrorBox');
+    if(validation.errors.length){
+      errorBox.style.display = 'block';
+      errorBox.innerHTML = '<div class="elig elig--bad"><strong>請修正以下欄位再參考試算結果：</strong><br>' + validation.errors.join('<br>') + '</div>';
+    } else {
+      errorBox.style.display = 'none';
+      errorBox.innerHTML = '';
+    }
+    var v = validation.values;
+
     var countyCat = els.county.value;
-    var priceWan = parseFloat(els.price.value) || 0;
-    var loanWan = parseFloat(els.loanAmount.value) || 0;
-    var age = parseFloat(els.age.value) || 0;
-    var years = Math.max(1, parseInt(els.years.value, 10) || 0);
-    var graceYears = Math.min(5, parseInt(els.grace.value, 10) || 0);
-    if(graceYears >= years) graceYears = Math.max(0, years - 1);
-    var startRate = parseFloat(els.baseRate.value) || 0; // 起跳利率（第1-3年，一段式機動＋青安補貼後之數字）
+    var priceWan = v.price;
+    var loanWan = v.loanAmount;
+    var age = v.age;
+    var income = v.income;
+    var years = v.years;
+    var graceYears = Math.min(v.grace, Math.max(0, years - 1));
+    var startRate = v.baseRate; // 補貼後起始利率（第1-3年，一段式機動＋青安補貼後之數字）
     var baseRate = startRate - rateOffsetForYear(1); // 還原為第7年起適用的原貸款利率（不受計息方式影響）
     var method = els.method.value;
     var methodLabel = els.method.options[els.method.selectedIndex].text;
@@ -449,6 +500,10 @@
     var principal = loanWan * 1e4;
     var rows = buildSchedule(principal, baseRate, years, graceYears, method);
     var totalInterest = rows.reduce(function(a, r){ return a + r.interest; }, 0);
+    document.getElementById('statTotalInterest').textContent = fmtWan(totalInterest / 1e4) + ' 萬';
+
+    var graceWarningEl = document.getElementById('graceWarning');
+    graceWarningEl.style.display = graceYears > 0 ? 'block' : 'none';
 
     var graceLabel = document.getElementById('graceLabel');
     var graceMonthlyEl = document.getElementById('graceMonthly');
@@ -472,7 +527,7 @@
       postGraceNote.textContent = methodLabel + '・以第 1 年利率 ' + (rows.length ? rows[0].annualRate.toFixed(3) : startRate.toFixed(3)) + '% 起算。';
     }
 
-    // 房價門檻使用率
+    // 房價門檻使用率（僅為視覺化圖表，不單獨決定整體資格狀態）
     var ratio = priceCap > 0 ? (priceWan / priceCap) : 0;
     var pct = Math.min(999, Math.round(ratio * 100));
     var priceBarPctEl = document.getElementById('priceBarPct');
@@ -484,27 +539,12 @@
     var priceBarNote = document.getElementById('priceBarNote');
     priceBarNote.textContent = PRICE_CAP_LABEL[countyCat] + ' 青安3.0房屋總價門檻：' + fmtWan(priceCap) + ' 萬；目前輸入 ' + fmtWan(priceWan) + ' 萬。';
 
-    var statusBadge = document.getElementById('statusBadge');
-    var statusNote = document.getElementById('statusNote');
-    if(ratio > 1){
-      statusBadge.className = 'badge badge--bad';
-      statusBadge.textContent = '超出總價門檻';
-      statusNote.textContent = '房屋總價已超出青安貸款總價門檻，可能無法適用青安優惠利率，請洽承辦銀行確認。';
-    } else if(ratio >= 0.85){
-      statusBadge.className = 'badge badge--warn';
-      statusBadge.textContent = '接近上限';
-      statusNote.textContent = '主要條件通過，惟房屋總價已接近門檻上限，下一步可向公股銀行確認實際核貸。';
-    } else {
-      statusBadge.className = 'badge badge--ok';
-      statusBadge.textContent = '額度充足';
-      statusNote.textContent = '主要條件通過，下一步可向公股銀行確認實際核貨。';
-    }
-
     // 補貼退場付款節奏卡片
     var stages = [
       { label: '第 1-3 年', y: 1, desc: '銀行半碼＋政府1.5碼，完整補貼2碼' },
       { label: '第 4 年', y: 4, desc: '補貼遞減半碼' },
       { label: '第 5 年', y: 5, desc: '補貼再遞減半碼' },
+      { label: '第 6 年', y: 6, desc: '補貼再遞減半碼' },
       { label: '第 7 年起', y: 7, desc: '補貼期滿，回到原貸款利率' }
     ];
     var stageWrap = document.getElementById('stageCards');
@@ -522,45 +562,67 @@
       stageWrap.appendChild(div);
     });
 
-    // 資格檢核
-    var income = parseFloat(els.income.value) || 0;
-    var checks = [];
+    // 資格檢核：先彙整所有必要資格，再依此決定頂部整體狀態，避免頂部與資格檢核互相矛盾
+    var hardChecks = [];
     if(age >= 50){
-      checks.push({ ok: false, text: '借款人年齡需未滿 50 歲，才符合青安貸款3.0申請資格。' });
+      hardChecks.push('借款人年齡需未滿 50 歲，才符合青安貸款3.0申請資格。');
     }
     if(age + years > 80){
-      checks.push({ ok: false, text: '「申貸年齡＋核貸年限」合計為 ' + (age + years) + '，不得超過 80，請調整貸款年限或洽承辦銀行確認。' });
+      hardChecks.push('「申貸年齡＋核貸年限」合計為 ' + (age + years) + '，不得超過 80，請調整貸款年限或洽承辦銀行確認。');
     }
     if(income > 200){
-      checks.push({ ok: false, text: '本人年所得（' + income + ' 萬）已超過 200 萬元排富門檻，可能不符合青安貸款3.0申請資格。' });
+      hardChecks.push('本人年所得（' + income + ' 萬）已超過 200 萬元排富門檻，可能不符合青安貸款3.0申請資格。');
     }
     if(!els.noOwnHome.checked){
-      checks.push({ ok: false, text: '需本人／配偶／未成年子女均無自有住宅，才符合青安貸款資格。' });
+      hardChecks.push('需本人／配偶／未成年子女均無自有住宅，才符合青安貸款資格。');
     }
     if(!els.neverUsed.checked){
-      checks.push({ ok: false, text: '需未曾使用過青安或農安貸款，才符合本次申請資格。' });
+      hardChecks.push('需未曾使用過青安或農安貸款，才符合本次申請資格。');
+    }
+    if(!els.selfOccupy.checked){
+      hardChecks.push('需切結本次購屋供本人或家庭自住，非自住用途不得享有本貸款利息補貼，且可能被追回已補貼金額。');
     }
     if(ratio > 1){
-      checks.push({ ok: false, text: '房屋總價超出所在縣市之青安3.0房價門檻。' });
+      hardChecks.push('房屋總價超出所在縣市之青安3.0房價門檻。');
     }
-    if(loanWan > maxLoan + 0.01){
-      checks.push({ ok: false, text: '申請貸款金額（' + fmtWan(loanWan) + ' 萬）超出估算最高可貸（' + fmtWan(maxLoan) + ' 萬），建議點選「套用最高可貸」調整。' });
+    var loanExceedsMax = loanWan > maxLoan + 0.01;
+
+    var statusBadge = document.getElementById('statusBadge');
+    var statusNote = document.getElementById('statusNote');
+    if(hardChecks.length > 0){
+      statusBadge.className = 'badge badge--bad';
+      statusBadge.textContent = '可能不符資格';
+      statusNote.textContent = '目前輸入條件未通過下方一項或多項必要資格檢核，請參考資格檢核區塊調整後再試算。';
+    } else if(loanExceedsMax){
+      statusBadge.className = 'badge badge--warn';
+      statusBadge.textContent = '貸款金額需調整';
+      statusNote.textContent = '身份與房價條件皆已通過，惟申請貸款金額超出估算最高可貸，請調整金額或點選「套用最高可貸」。';
+    } else {
+      statusBadge.className = 'badge badge--ok';
+      statusBadge.textContent = '初步符合主要門檻';
+      statusNote.textContent = '以目前輸入條件初步符合青安貸款3.0主要政策門檻，下一步可向公股銀行確認實際核貸。';
     }
 
     var eligBox = document.getElementById('eligibilityBox');
     eligBox.innerHTML = '';
-    if(checks.length === 0){
+    if(hardChecks.length === 0 && !loanExceedsMax){
       var okDiv = document.createElement('div');
       okDiv.className = 'elig elig--ok';
       okDiv.textContent = '以目前輸入條件，通過主要政策門檻與額度上限檢核。';
       eligBox.appendChild(okDiv);
     } else {
-      checks.forEach(function(c){
+      hardChecks.forEach(function(text){
         var d = document.createElement('div');
         d.className = 'elig elig--bad';
-        d.textContent = c.text;
+        d.textContent = text;
         eligBox.appendChild(d);
       });
+      if(loanExceedsMax){
+        var warnDiv = document.createElement('div');
+        warnDiv.className = 'elig elig--warn';
+        warnDiv.textContent = '申請貸款金額（' + fmtWan(loanWan) + ' 萬）超出估算最高可貸（' + fmtWan(maxLoan) + ' 萬），建議點選「套用最高可貸」調整。';
+        eligBox.appendChild(warnDiv);
+      }
     }
     var infoDiv = document.createElement('div');
     infoDiv.className = 'elig elig--warn';
