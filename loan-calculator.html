@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>青安貸款3.0試算｜吉隆天曜</title>
-<meta name="description" content="吉隆天曜青安貸款3.0試算工具，輸入總價、身份條件、貸款年限與寬限期，試算額度上限、月付金、補貼退場付款節奏與資格檢核。">
+<title>貸款試算｜吉隆天曜</title>
+<meta name="description" content="吉隆天曜貸款試算工具，可切換「青安貸款3.0」與「一般房貸／首購」，試算額度、月付金與總利息。">
 <meta name="robots" content="noindex">
 <link rel="canonical" href="https://normalsky315-jpg.github.io/sky-radianc/loan-calculator.html">
 
@@ -34,6 +34,10 @@
   .btn--solid:hover{background:var(--ink);border-color:var(--ink)}
   :focus-visible{outline:2px solid var(--gold);outline-offset:3px}
 
+  /* body[data-calc-mode] controls which mode-specific blocks are visible */
+  body[data-calc-mode="youth"] [data-only="general"]{display:none !important}
+  body[data-calc-mode="general"] [data-only="youth"]{display:none !important}
+
   /* brand hero band — blue gradient banner, echoes the internal lunch-system header */
   .band{position:relative;overflow:hidden;background:linear-gradient(115deg,var(--blue-deep) 0%,var(--blue-mid) 48%,var(--blue-light) 100%);padding:72px 24px 78px}
   .band__clouds{position:absolute;top:14px;left:50%;transform:translateX(-50%);width:220px;height:44px;pointer-events:none}
@@ -54,6 +58,12 @@
   .hero .lede{max-width:56ch;margin:16px auto 0;color:var(--ink-soft);font-size:1.1rem}
 
   .section{padding:30px 0 96px}
+
+  /* mode tabs */
+  .mode-tabs{display:flex;gap:10px;margin-top:28px;flex-wrap:wrap}
+  .mode-tab{flex:1 1 220px;padding:14px 18px;border:1px solid var(--gold);background:#fff;color:var(--ink);font-family:var(--sans);font-weight:500;font-size:.94rem;letter-spacing:.06em;cursor:pointer;transition:background .3s,color .3s;text-align:center}
+  .mode-tab.active{background:var(--gold);color:#fff}
+  .mode-tab:hover:not(.active){background:var(--cream-2)}
 
   /* calculator layout */
   .calc{display:grid;grid-template-columns:1fr;gap:24px;margin-top:20px;align-items:start}
@@ -155,7 +165,7 @@
   footer.foot{background:var(--ink);color:rgba(255,255,255,.65);padding:26px 0;text-align:center;font-size:.9rem}
 </style>
 </head>
-<body>
+<body data-calc-mode="youth">
 
 <div class="band">
   <div class="band__clouds"><span></span><span></span><span></span></div>
@@ -168,13 +178,19 @@
 </div>
 
 <div class="hero wrap">
-  <p class="eyebrow">青安貸款 3.0 試算</p>
+  <p class="eyebrow" id="heroEyebrow">青安貸款 3.0 試算</p>
   <h1>貸款試算</h1>
-  <p class="lede">輸入總價、身份條件、貸款年限與寬限期，試算青安貸款3.0的額度上限、寬限期月付、補貼退場付款節奏與資格檢核。以下結果僅供參考，實際核貸依承辦銀行審核為準。</p>
-  <p class="lede" style="font-size:.82rem;margin-top:10px">資料更新：2026-08-01・資料來源：<a href="https://www.mof.gov.tw/singlehtml/384fb3077bb349ea973e7fc6f13b6974?cntId=482aa9c142b34abc83750cb64c15cb11" target="_blank" rel="noopener" style="text-decoration:underline;color:var(--gold)">財政部青安貸款3.0說明</a></p>
+  <p class="lede" id="heroLede">輸入總價、身份條件、貸款年限與寬限期，試算青安貸款3.0的額度上限、寬限期月付、補貼退場付款節奏與資格檢核。以下結果僅供參考，實際核貸依承辦銀行審核為準。</p>
+  <p class="lede" data-only="youth" style="font-size:.82rem;margin-top:10px">資料更新：2026-08-01・資料來源：<a href="https://www.mof.gov.tw/singlehtml/384fb3077bb349ea973e7fc6f13b6974?cntId=482aa9c142b34abc83750cb64c15cb11" target="_blank" rel="noopener" style="text-decoration:underline;color:var(--gold)">財政部青安貸款3.0說明</a></p>
 </div>
 
 <section class="section wrap">
+
+  <div class="mode-tabs">
+    <button type="button" class="mode-tab active" data-mode="youth">青安貸款 3.0</button>
+    <button type="button" class="mode-tab" data-mode="general">一般房貸／首購</button>
+  </div>
+
   <div class="calc">
 
     <!-- INPUT PANEL -->
@@ -182,7 +198,7 @@
       <h2>房屋與身份</h2>
 
       <div class="group" style="margin-top:22px">
-        <div class="field">
+        <div class="field" data-only="youth">
           <label class="field__label" for="county">縣市區域</label>
           <select class="select" id="county">
             <option value="other" selected>其他縣市（含高雄市）</option>
@@ -194,7 +210,7 @@
           <label class="field__label" for="price">買賣總價／鑑價，取較低者 <span class="unit">（萬元）</span></label>
           <input class="input" type="number" id="price" value="900" min="1" step="1">
         </div>
-        <div class="field-row">
+        <div class="field-row" data-only="youth">
           <div class="field">
             <label class="field__label" for="age">借款人年齡</label>
             <input class="input" type="number" id="age" value="35" min="18" max="99" step="1">
@@ -206,7 +222,7 @@
         </div>
       </div>
 
-      <div class="group">
+      <div class="group" data-only="youth">
         <label class="check"><input type="checkbox" id="married2y"> 申請日前2年內結婚</label>
         <label class="check"><input type="checkbox" id="minorChild"> 育有未成年子女</label>
         <label class="check"><input type="checkbox" id="noOwnHome" checked> 本人／配偶／未成年子女無自有住宅</label>
@@ -230,13 +246,17 @@
             <label class="field__label" for="grace">寬限期 <span class="unit">（年）</span></label>
             <input class="input" type="number" id="grace" value="3" min="0" max="5" step="1">
           </div>
-          <div class="field">
+          <div class="field" data-only="youth">
             <label class="field__label" for="baseRate">補貼後起始利率 <span class="unit">（%）</span></label>
             <input class="input" type="number" id="baseRate" value="1.775" min="0" max="10" step="0.001">
           </div>
+          <div class="field" data-only="general">
+            <label class="field__label" for="generalRate">貸款利率 <span class="unit">（%）</span></label>
+            <input class="input" type="number" id="generalRate" value="2.5" min="0" max="10" step="0.001">
+          </div>
         </div>
         <p class="field-hint" id="graceWarning" style="display:none">⚠ 寬限期內僅繳息、不還本金，本金遞延攤還將墊高總利息支出，寬限期愈長，總利息通常愈高。</p>
-        <div class="field">
+        <div class="field" data-only="youth">
           <label class="field__label" for="method">計息方式</label>
           <select class="select" id="method">
             <option value="single" selected>一段式機動</option>
@@ -245,10 +265,18 @@
           </select>
           <p class="field-hint">不同計息方式僅影響前3年顯示利率，加碼幅度為示意，實際依承辦銀行公告為準。</p>
         </div>
+        <div class="field" data-only="general">
+          <label class="field__label" for="repayMethod">攤還方式</label>
+          <select class="select" id="repayMethod">
+            <option value="equalPayment" selected>本息均攤（月付固定）</option>
+            <option value="equalPrincipal">本金均攤（月付遞減）</option>
+          </select>
+          <p class="field-hint">本息均攤：每月還款金額固定。本金均攤：每月攤還本金固定，月付隨本金遞減而降低，前期負擔較高、總利息較低。</p>
+        </div>
       </div>
 
       <div class="btn-row">
-        <button type="button" class="btn btn--solid" id="applyMax" title="依目前總價與身份條件，自動帶入估算最高可貸金額至「申請貸款金額」欄位">套用最高可貸</button>
+        <button type="button" class="btn btn--solid" id="applyMax" title="自動帶入估算貸款金額至「貸款金額」欄位">套用最高可貸</button>
         <button type="button" class="btn btn-ghost" id="resetDefaults">重設預設值</button>
       </div>
     </div>
@@ -265,13 +293,17 @@
       <div id="inputErrorBox" style="display:none"></div>
 
       <div class="stat-row">
-        <div class="stat">
+        <div class="stat" data-only="youth">
           <div class="k">青安額度上限</div>
           <div class="v" id="statYouthCap">1,000 萬</div>
         </div>
-        <div class="stat">
+        <div class="stat" data-only="youth">
           <div class="k">估算最高可貸</div>
           <div class="v" id="statMaxLoan">0 萬</div>
+        </div>
+        <div class="stat" data-only="general">
+          <div class="k">貸款金額</div>
+          <div class="v" id="statLoanGeneral">0 萬</div>
         </div>
         <div class="stat">
           <div class="k">估算自備款（未含稅費）</div>
@@ -297,17 +329,25 @@
         </div>
       </div>
 
-      <div class="bar-block">
+      <div class="bar-block" data-only="youth">
         <div class="lbl"><span>房價門檻使用率</span><b id="priceBarPct">0%</b></div>
         <div class="bar-track"><div class="bar-fill" id="priceBar" style="width:0%"></div></div>
         <p class="bar-note" id="priceBarNote"></p>
       </div>
 
-      <div class="stage-title">補貼退場付款節奏</div>
-      <div class="stage-row" id="stageCards"></div>
+      <div data-only="youth">
+        <div class="stage-title">補貼退場付款節奏</div>
+        <div class="stage-row" id="stageCards"></div>
+      </div>
 
-      <div class="elig-title">資格檢核</div>
-      <div id="eligibilityBox"></div>
+      <div data-only="youth">
+        <div class="elig-title">資格檢核</div>
+        <div id="eligibilityBox"></div>
+      </div>
+
+      <div data-only="general" class="elig elig--warn" style="margin-bottom:26px">
+        一般房貸（含首購）不受青安貸款3.0之身份資格、總價門檻與額度限制；實際核貸利率、成數與費用依承辦銀行審核、個人信用與收支條件而定，建議實際洽詢2-3家銀行比較條件。
+      </div>
 
       <div class="table-wrap">
         <table>
@@ -319,13 +359,13 @@
 
   </div>
 
-  <p class="disclaimer">
+  <p class="disclaimer" id="disclaimerText">
     ※ 本試算工具依行政院公布之「青年安心成家購屋優惠貸款3.0方案」規則設計（額度上限、房屋總價門檻、利息補貼遞減節奏、貸款成數、年齡與所得排富門檻），惟利率屬浮動指標且可能調整，實際資格認定、核貸額度、利率與各項費用，均以承辦銀行與內政部最新公告為準。試算結果四捨五入至整數，可能與實際攤還表略有差異，僅供購屋規劃參考，非正式貸款核准文件。
   </p>
 </section>
 
 <footer class="foot">
-  <div class="wrap">吉隆天曜青安貸款3.0試算工具</div>
+  <div class="wrap">吉隆天曜貸款試算工具</div>
 </footer>
 
 <script>
@@ -334,9 +374,12 @@
   var PRICE_CAP = { taipei: 3500, newtaipei: 2500, other: 2000 }; // 萬元，青安3.0房屋總價上限
   var PRICE_CAP_LABEL = { taipei: '台北市', newtaipei: '新北市／新竹縣市', other: '其他縣市' };
 
+  var currentMode = 'youth';
+
   var els = {};
   ['county','price','age','income','married2y','minorChild','noOwnHome','neverUsed',
-   'loanAmount','years','grace','baseRate','method'].forEach(function(id){ els[id] = document.getElementById(id); });
+   'loanAmount','years','grace','baseRate','method',
+   'generalRate','repayMethod'].forEach(function(id){ els[id] = document.getElementById(id); });
 
   function loanCapByStatus(){
     if(els.minorChild.checked) return 1500;
@@ -348,62 +391,61 @@
     return Math.min(loanCapByStatus(), priceWan * LTV_MAX);
   }
 
-  // 欄位驗證：回傳 {errors, values}，values 為修正到合理範圍後可安全用於試算的數字
-  function validateInputs(){
-    var errors = [];
-    function checkRange(raw, label, min, max, unit){
-      var v = parseFloat(raw);
-      if(raw === '' || isNaN(v)){
-        errors.push(label + '請輸入數字。');
-        return min;
-      }
-      if(v < min || v > max){
-        errors.push(label + '請輸入 ' + min + ' 至 ' + max + (unit || '') + ' 之間的數值（目前輸入 ' + raw + '）。');
-        return Math.min(Math.max(v, min), max);
-      }
-      return v;
+  function fmtInt(n){ return Math.round(n).toLocaleString('zh-Hant-TW'); }
+  function fmtWan(n){ return (Math.round(n * 10) / 10).toLocaleString('zh-Hant-TW'); }
+
+  // 共用欄位驗證：回傳修正到合理範圍後的數值，並把超出範圍的訊息塞進 errors 陣列
+  function checkRange(raw, label, min, max, unit, errors){
+    var v = parseFloat(raw);
+    if(raw === '' || isNaN(v)){
+      errors.push(label + '請輸入數字。');
+      return min;
     }
+    if(v < min || v > max){
+      errors.push(label + '請輸入 ' + min + ' 至 ' + max + (unit || '') + ' 之間的數值（目前輸入 ' + raw + '）。');
+      return Math.min(Math.max(v, min), max);
+    }
+    return v;
+  }
+
+  function validateInputsYouth(){
+    var errors = [];
     var values = {
-      price: checkRange(els.price.value, '買賣總價／鑑價', 1, 100000, '萬元'),
-      age: checkRange(els.age.value, '借款人年齡', 18, 99, '歲'),
-      income: checkRange(els.income.value, '本人年所得', 0, 100000, '萬元'),
-      loanAmount: checkRange(els.loanAmount.value, '貸款金額', 1, 100000, '萬元'),
-      years: checkRange(els.years.value, '貸款年限', 1, 40, '年'),
-      grace: checkRange(els.grace.value, '寬限期', 0, 5, '年'),
-      baseRate: checkRange(els.baseRate.value, '補貼後起始利率', 0, 10, '%')
+      price: checkRange(els.price.value, '買賣總價／鑑價', 1, 100000, '萬元', errors),
+      age: checkRange(els.age.value, '借款人年齡', 18, 99, '歲', errors),
+      income: checkRange(els.income.value, '本人年所得', 0, 100000, '萬元', errors),
+      loanAmount: checkRange(els.loanAmount.value, '貸款金額', 1, 100000, '萬元', errors),
+      years: checkRange(els.years.value, '貸款年限', 1, 40, '年', errors),
+      grace: checkRange(els.grace.value, '寬限期', 0, 5, '年', errors),
+      baseRate: checkRange(els.baseRate.value, '補貼後起始利率', 0, 10, '%', errors)
     };
     return { errors: errors, values: values };
   }
 
-  document.getElementById('applyMax').addEventListener('click', function(){
-    var priceWan = parseFloat(els.price.value) || 0;
-    var maxLoan = computeMaxLoan(priceWan);
-    els.loanAmount.value = Math.max(0, Math.round(maxLoan));
-    calculate();
-  });
+  function validateInputsGeneral(){
+    var errors = [];
+    var values = {
+      price: checkRange(els.price.value, '買賣總價／鑑價', 1, 100000, '萬元', errors),
+      loanAmount: checkRange(els.loanAmount.value, '貸款金額', 1, 100000, '萬元', errors),
+      years: checkRange(els.years.value, '貸款年限', 1, 40, '年', errors),
+      grace: checkRange(els.grace.value, '寬限期', 0, 5, '年', errors),
+      generalRate: checkRange(els.generalRate.value, '貸款利率', 0, 10, '%', errors)
+    };
+    return { errors: errors, values: values };
+  }
 
-  document.getElementById('resetDefaults').addEventListener('click', function(){
-    els.county.selectedIndex = 0;
-    els.price.value = 900;
-    els.age.value = 35;
-    els.income.value = 80;
-    els.married2y.checked = false;
-    els.minorChild.checked = false;
-    els.noOwnHome.checked = true;
-    els.neverUsed.checked = true;
-    els.loanAmount.value = 720;
-    els.years.value = 30;
-    els.grace.value = 3;
-    els.baseRate.value = 1.775;
-    els.method.value = 'single';
-    calculate();
-  });
+  function renderErrors(errors){
+    var errorBox = document.getElementById('inputErrorBox');
+    if(errors.length){
+      errorBox.style.display = 'block';
+      errorBox.innerHTML = '<div class="elig elig--bad"><strong>請修正以下欄位再參考試算結果：</strong><br>' + errors.join('<br>') + '</div>';
+    } else {
+      errorBox.style.display = 'none';
+      errorBox.innerHTML = '';
+    }
+  }
 
-  Object.keys(els).forEach(function(id){
-    var el = els[id];
-    var evt = (el.type === 'checkbox' || el.tagName === 'SELECT') ? 'change' : 'input';
-    el.addEventListener(evt, calculate);
-  });
+  // ===== 青安貸款3.0 計算引擎 =====
 
   // 青安3.0利息補貼為政府政策，不論銀行採一段式/二段式/混合式計息，前6年皆適用同一套遞減規則
   function rateOffsetForYear(y){
@@ -423,7 +465,7 @@
     return 0;                                // 一段式機動：無額外加碼
   }
 
-  function buildSchedule(principal, baseRatePct, years, graceYears, method){
+  function buildYouthSchedule(principal, baseRatePct, years, graceYears, method){
     var n = years * 12;
     var g = Math.min(graceYears * 12, n);
     var balance = principal;
@@ -458,19 +500,88 @@
     return rows;
   }
 
-  function fmtInt(n){ return Math.round(n).toLocaleString('zh-Hant-TW'); }
-  function fmtWan(n){ return (Math.round(n * 10) / 10).toLocaleString('zh-Hant-TW'); }
-
-  function calculate(){
-    var validation = validateInputs();
-    var errorBox = document.getElementById('inputErrorBox');
-    if(validation.errors.length){
-      errorBox.style.display = 'block';
-      errorBox.innerHTML = '<div class="elig elig--bad"><strong>請修正以下欄位再參考試算結果：</strong><br>' + validation.errors.join('<br>') + '</div>';
-    } else {
-      errorBox.style.display = 'none';
-      errorBox.innerHTML = '';
+  // ===== 一般房貸／首購 計算引擎（固定單一利率，本息均攤或本金均攤）=====
+  function buildGeneralSchedule(principal, ratePct, years, graceYears, repayMethod){
+    var n = years * 12;
+    var g = Math.min(graceYears * 12, n);
+    var monthlyRate = ratePct / 100 / 12;
+    var balance = principal;
+    var rows = [];
+    var payN = n - g;
+    var fixedPayment = 0;
+    if(repayMethod === 'equalPayment' && payN > 0){
+      fixedPayment = monthlyRate === 0 ? principal / payN
+        : principal * monthlyRate * Math.pow(1 + monthlyRate, payN) / (Math.pow(1 + monthlyRate, payN) - 1);
     }
+    var principalPerMonth = payN > 0 ? principal / payN : 0;
+    for(var m = 1; m <= n; m++){
+      var y = Math.ceil(m / 12);
+      var interest = balance * monthlyRate;
+      var principalPaid, payment;
+      if(m <= g){
+        principalPaid = 0;
+        payment = interest;
+      } else if(repayMethod === 'equalPayment'){
+        payment = fixedPayment;
+        principalPaid = payment - interest;
+      } else {
+        principalPaid = principalPerMonth;
+        payment = principalPaid + interest;
+      }
+      if(principalPaid > balance) principalPaid = balance;
+      balance = Math.max(0, balance - principalPaid);
+      rows.push({ m: m, y: y, annualRate: ratePct, interest: interest, principal: principalPaid, payment: payment, balance: balance });
+    }
+    return rows;
+  }
+
+  function renderPayRowAndTable(rows, years, graceYears, headline){
+    var graceWarningEl = document.getElementById('graceWarning');
+    graceWarningEl.style.display = graceYears > 0 ? 'block' : 'none';
+
+    var graceLabel = document.getElementById('graceLabel');
+    var graceMonthlyEl = document.getElementById('graceMonthly');
+    var postGraceLabel = document.getElementById('postGraceLabel');
+    var postGraceMonthlyEl = document.getElementById('postGraceMonthly');
+    var postGraceNote = document.getElementById('postGraceNote');
+
+    if(graceYears > 0 && rows.length){
+      graceLabel.textContent = '寬限期月付（第1-' + graceYears + '年）';
+      graceMonthlyEl.textContent = fmtInt(rows[0].payment);
+      var firstPostGraceIdx = graceYears * 12;
+      var postRow = rows[firstPostGraceIdx] || rows[rows.length - 1];
+      postGraceLabel.textContent = headline.postGraceLabel;
+      postGraceMonthlyEl.textContent = fmtInt(postRow.payment);
+      postGraceNote.textContent = headline.noteFn(postRow, graceYears, years);
+    } else {
+      graceLabel.textContent = '未設寬限期';
+      graceMonthlyEl.textContent = '－';
+      postGraceLabel.textContent = headline.noGraceLabel;
+      postGraceMonthlyEl.textContent = fmtInt(rows.length ? rows[0].payment : 0);
+      postGraceNote.textContent = rows.length ? headline.noteFn(rows[0], 0, years) : '';
+    }
+
+    var body = document.getElementById('summaryBody');
+    body.innerHTML = '';
+    var showYears = Math.min(10, years);
+    for(var y = 0; y < showYears; y++){
+      var yearRows = rows.slice(y * 12, y * 12 + 12);
+      if(!yearRows.length) break;
+      var yi = yearRows.reduce(function(a, r){ return a + r.interest; }, 0);
+      var lastRow = yearRows[yearRows.length - 1];
+      var tr = document.createElement('tr');
+      tr.innerHTML = '<td>第 ' + (y + 1) + ' 年</td>' +
+        '<td>' + lastRow.annualRate.toFixed(3) + '%</td>' +
+        '<td>' + fmtInt(lastRow.payment) + '</td>' +
+        '<td>' + fmtInt(yi) + '</td>' +
+        '<td>' + fmtInt(lastRow.balance) + '</td>';
+      body.appendChild(tr);
+    }
+  }
+
+  function calculateYouth(){
+    var validation = validateInputsYouth();
+    renderErrors(validation.errors);
     var v = validation.values;
 
     var countyCat = els.county.value;
@@ -495,34 +606,17 @@
     document.getElementById('statMinDown').textContent = fmtWan(minDown) + ' 萬';
 
     var principal = loanWan * 1e4;
-    var rows = buildSchedule(principal, baseRate, years, graceYears, method);
+    var rows = buildYouthSchedule(principal, baseRate, years, graceYears, method);
     var totalInterest = rows.reduce(function(a, r){ return a + r.interest; }, 0);
     document.getElementById('statTotalInterest').textContent = fmtWan(totalInterest / 1e4) + ' 萬';
 
-    var graceWarningEl = document.getElementById('graceWarning');
-    graceWarningEl.style.display = graceYears > 0 ? 'block' : 'none';
-
-    var graceLabel = document.getElementById('graceLabel');
-    var graceMonthlyEl = document.getElementById('graceMonthly');
-    var postGraceLabel = document.getElementById('postGraceLabel');
-    var postGraceMonthlyEl = document.getElementById('postGraceMonthly');
-    var postGraceNote = document.getElementById('postGraceNote');
-
-    if(graceYears > 0 && rows.length){
-      graceLabel.textContent = '寬限期月付（第1-' + graceYears + '年）';
-      graceMonthlyEl.textContent = fmtInt(rows[0].payment);
-      var firstPostGraceIdx = graceYears * 12;
-      var postRow = rows[firstPostGraceIdx] || rows[rows.length - 1];
-      postGraceLabel.textContent = '寬限期後月付';
-      postGraceMonthlyEl.textContent = fmtInt(postRow.payment);
-      postGraceNote.textContent = methodLabel + '・以第 ' + (graceYears + 1) + ' 年利率 ' + postRow.annualRate.toFixed(3) + '% 與剩餘 ' + (years - graceYears) + ' 年估算。';
-    } else {
-      graceLabel.textContent = '未設寬限期';
-      graceMonthlyEl.textContent = '－';
-      postGraceLabel.textContent = '每月還款金額';
-      postGraceMonthlyEl.textContent = fmtInt(rows.length ? rows[0].payment : 0);
-      postGraceNote.textContent = methodLabel + '・以第 1 年利率 ' + (rows.length ? rows[0].annualRate.toFixed(3) : startRate.toFixed(3)) + '% 起算。';
-    }
+    renderPayRowAndTable(rows, years, graceYears, {
+      postGraceLabel: '寬限期後月付',
+      noGraceLabel: '每月還款金額',
+      noteFn: function(row, g, yrs){
+        return methodLabel + '・以第 ' + (g + 1) + ' 年利率 ' + row.annualRate.toFixed(3) + '% ' + (g > 0 ? '與剩餘 ' + (yrs - g) + ' 年估算。' : '起算。');
+      }
+    });
 
     // 房價門檻使用率（僅為視覺化圖表，不單獨決定整體資格狀態）
     var ratio = priceCap > 0 ? (priceWan / priceCap) : 0;
@@ -622,26 +716,112 @@
     infoDiv.className = 'elig elig--warn';
     infoDiv.textContent = '一般家庭青安貸款額度上限為 1,000 萬元，新婚2年內家庭最高 1,200 萬元，育有未成年子女家庭最高 1,500 萬元；貸款成數最高8成。青安貸款3.0申請期間為 2026年8月1日至2029年7月31日。';
     eligBox.appendChild(infoDiv);
+  }
 
-    // 年度摘要（前10年，或至貸款年限為止）
-    var body = document.getElementById('summaryBody');
-    body.innerHTML = '';
-    var showYears = Math.min(10, years);
-    for(var y = 0; y < showYears; y++){
-      var yearRows = rows.slice(y * 12, y * 12 + 12);
-      if(!yearRows.length) break;
-      var yi = yearRows.reduce(function(a, r){ return a + r.interest; }, 0);
-      var lastRow = yearRows[yearRows.length - 1];
-      var tr = document.createElement('tr');
-      tr.innerHTML = '<td>第 ' + (y + 1) + ' 年</td>' +
-        '<td>' + lastRow.annualRate.toFixed(3) + '%</td>' +
-        '<td>' + fmtInt(lastRow.payment) + '</td>' +
-        '<td>' + fmtInt(yi) + '</td>' +
-        '<td>' + fmtInt(lastRow.balance) + '</td>';
-      body.appendChild(tr);
+  function calculateGeneral(){
+    var validation = validateInputsGeneral();
+    renderErrors(validation.errors);
+    var v = validation.values;
+
+    var priceWan = v.price;
+    var loanWan = v.loanAmount;
+    var years = v.years;
+    var graceYears = Math.min(v.grace, Math.max(0, years - 1));
+    var ratePct = v.generalRate;
+    var repayMethod = els.repayMethod.value;
+    var repayLabel = els.repayMethod.options[els.repayMethod.selectedIndex].text;
+
+    var minDown = Math.max(0, priceWan - loanWan);
+    document.getElementById('statLoanGeneral').textContent = fmtWan(loanWan) + ' 萬';
+    document.getElementById('statMinDown').textContent = fmtWan(minDown) + ' 萬';
+
+    var principal = loanWan * 1e4;
+    var rows = buildGeneralSchedule(principal, ratePct, years, graceYears, repayMethod);
+    var totalInterest = rows.reduce(function(a, r){ return a + r.interest; }, 0);
+    document.getElementById('statTotalInterest').textContent = fmtWan(totalInterest / 1e4) + ' 萬';
+
+    renderPayRowAndTable(rows, years, graceYears, {
+      postGraceLabel: repayMethod === 'equalPrincipal' ? '寬限期後首月月付' : '寬限期後月付',
+      noGraceLabel: repayMethod === 'equalPrincipal' ? '首月月付' : '每月還款金額',
+      noteFn: function(row, g){
+        return repayLabel + '，利率 ' + row.annualRate.toFixed(3) + '%' + (repayMethod === 'equalPrincipal' ? '，月付隨本金遞減逐月降低。' : '，每月還款金額固定。');
+      }
+    });
+
+    var statusBadge = document.getElementById('statusBadge');
+    var statusNote = document.getElementById('statusNote');
+    statusBadge.className = 'badge badge--ok';
+    statusBadge.textContent = '一般房貸試算';
+    statusNote.textContent = '一般房貸（含首購）不受青安貸款3.0身份資格與總價門檻限制，實際核貸利率、成數與費用依銀行審核與個案條件為準。';
+  }
+
+  function calculate(){
+    if(currentMode === 'youth') calculateYouth();
+    else calculateGeneral();
+  }
+
+  function updateModeText(){
+    var eyebrow = document.getElementById('heroEyebrow');
+    var lede = document.getElementById('heroLede');
+    var disclaimer = document.getElementById('disclaimerText');
+    var applyMaxBtn = document.getElementById('applyMax');
+    if(currentMode === 'youth'){
+      eyebrow.textContent = '青安貸款 3.0 試算';
+      lede.textContent = '輸入總價、身份條件、貸款年限與寬限期，試算青安貸款3.0的額度上限、寬限期月付、補貼退場付款節奏與資格檢核。以下結果僅供參考，實際核貸依承辦銀行審核為準。';
+      disclaimer.textContent = '※ 本試算工具依行政院公布之「青年安心成家購屋優惠貸款3.0方案」規則設計（額度上限、房屋總價門檻、利息補貼遞減節奏、貸款成數、年齡與所得排富門檻），惟利率屬浮動指標且可能調整，實際資格認定、核貸額度、利率與各項費用，均以承辦銀行與內政部最新公告為準。試算結果四捨五入至整數，可能與實際攤還表略有差異，僅供購屋規劃參考，非正式貸款核准文件。';
+      applyMaxBtn.textContent = '套用最高可貸';
+    } else {
+      eyebrow.textContent = '一般房貸／首購試算';
+      lede.textContent = '輸入總價、貸款金額、年限與寬限期，並選擇本息均攤或本金均攤，試算一般房貸（含首購）的每月還款金額與總利息。以下結果僅供參考，實際核貸利率、成數與費用依銀行審核為準。';
+      disclaimer.textContent = '※ 本試算工具為一般房貸試算，不涉及政府專案貸款資格與補貼規則，僅依您輸入之利率、年限與攤還方式試算月付與總利息，實際核貸利率、成數、費用與資格審核均以承辦銀行公告與個案信用狀況為準。試算結果四捨五入至整數，可能與實際攤還表略有差異，僅供購屋規劃參考，非正式貸款核准文件。';
+      applyMaxBtn.textContent = '套用建議貸款（8成）';
     }
   }
 
+  document.querySelectorAll('.mode-tab').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      document.querySelectorAll('.mode-tab').forEach(function(b){ b.classList.remove('active'); });
+      btn.classList.add('active');
+      currentMode = btn.dataset.mode;
+      document.body.setAttribute('data-calc-mode', currentMode);
+      updateModeText();
+      calculate();
+    });
+  });
+
+  document.getElementById('applyMax').addEventListener('click', function(){
+    var priceWan = parseFloat(els.price.value) || 0;
+    var maxLoan = currentMode === 'youth' ? computeMaxLoan(priceWan) : priceWan * LTV_MAX;
+    els.loanAmount.value = Math.max(0, Math.round(maxLoan));
+    calculate();
+  });
+
+  document.getElementById('resetDefaults').addEventListener('click', function(){
+    els.county.selectedIndex = 0;
+    els.price.value = 900;
+    els.age.value = 35;
+    els.income.value = 80;
+    els.married2y.checked = false;
+    els.minorChild.checked = false;
+    els.noOwnHome.checked = true;
+    els.neverUsed.checked = true;
+    els.loanAmount.value = 720;
+    els.years.value = 30;
+    els.grace.value = 3;
+    els.baseRate.value = 1.775;
+    els.method.value = 'single';
+    els.generalRate.value = 2.5;
+    els.repayMethod.value = 'equalPayment';
+    calculate();
+  });
+
+  Object.keys(els).forEach(function(id){
+    var el = els[id];
+    var evt = (el.type === 'checkbox' || el.tagName === 'SELECT') ? 'change' : 'input';
+    el.addEventListener(evt, calculate);
+  });
+
+  updateModeText();
   calculate();
 })();
 </script>
