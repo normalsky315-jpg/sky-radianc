@@ -69,7 +69,7 @@
   .calc{display:grid;grid-template-columns:1fr;gap:24px;margin-top:20px;align-items:start}
   @media(min-width:960px){.calc{grid-template-columns:360px 1fr}}
 
-  .panel{background:#fff;border:1px solid var(--line);padding:28px clamp(18px,3vw,32px)}
+  .panel{background:#fff;border:1px solid var(--line);padding:28px clamp(18px,3vw,32px);min-width:0}
   .panel h2{font-size:1.25rem;margin-bottom:2px}
 
   .group{margin-bottom:26px}
@@ -94,6 +94,11 @@
   .input{font-family:var(--num);font-variant-numeric:tabular-nums;font-weight:600;font-size:1.1rem}
   .input:focus,.select:focus{outline:none;border-color:var(--gold)}
   .select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--gold) 50%),linear-gradient(135deg,var(--gold) 50%,transparent 50%);background-position:calc(100% - 18px) center,calc(100% - 13px) center;background-size:5px 5px,5px 5px;background-repeat:no-repeat}
+
+  .amount-wrap{display:flex;align-items:center;gap:6px}
+  .field-row .amount-wrap{margin-top:auto}
+  .amount-wrap .input{flex:1 1 auto;min-width:0;padding-left:8px;padding-right:4px;background:var(--cream-2);color:var(--stone-deep);cursor:default;margin-top:0}
+  .pct-badge{font-family:var(--num);font-variant-numeric:tabular-nums;font-weight:700;color:var(--gold);font-size:.92rem;white-space:nowrap;flex-shrink:0}
 
   .check{display:flex;align-items:flex-start;gap:10px;margin-bottom:14px;font-size:.92rem;color:var(--ink-soft);cursor:pointer;min-height:24px}
   .check:last-child{margin-bottom:0}
@@ -234,28 +239,35 @@
         <div class="field-row">
           <div class="field">
             <label class="field__label" for="loanAmount">貸款金額 <span class="unit">（萬元）</span></label>
-            <input class="input" type="number" id="loanAmount" value="720" min="1" step="1">
+            <div class="amount-wrap">
+              <input class="input" type="text" id="loanAmount" value="675" readonly tabindex="-1">
+              <span class="pct-badge" id="loanPctBadge">(75%)</span>
+            </div>
           </div>
           <div class="field">
-            <label class="field__label" for="years">貸款年限 <span class="unit">（年）</span></label>
-            <input class="input" type="number" id="years" value="30" min="1" max="40" step="1">
+            <label class="field__label" for="loanRatio">貸款成數 <span class="unit">（%）</span></label>
+            <input class="input" type="number" id="loanRatio" value="75" min="1" max="100" step="1">
           </div>
         </div>
         <div class="field-row">
           <div class="field">
+            <label class="field__label" for="years">貸款年限 <span class="unit">（年）</span></label>
+            <input class="input" type="number" id="years" value="30" min="1" max="40" step="1">
+          </div>
+          <div class="field">
             <label class="field__label" for="grace">寬限期 <span class="unit">（年）</span></label>
             <input class="input" type="number" id="grace" value="3" min="0" max="5" step="1">
           </div>
-          <div class="field" data-only="youth">
-            <label class="field__label" for="baseRate">補貼後起始利率 <span class="unit">（%）</span></label>
-            <input class="input" type="number" id="baseRate" value="1.775" min="0" max="10" step="0.001">
-          </div>
-          <div class="field" data-only="general">
-            <label class="field__label" for="generalRate">貸款利率 <span class="unit">（%）</span></label>
-            <input class="input" type="number" id="generalRate" value="2.5" min="0" max="10" step="0.001">
-          </div>
         </div>
         <p class="field-hint" id="graceWarning" style="display:none">⚠ 寬限期內僅繳息、不還本金，本金遞延攤還將墊高總利息支出，寬限期愈長，總利息通常愈高。</p>
+        <div class="field" data-only="youth">
+          <label class="field__label" for="baseRate">補貼後起始利率 <span class="unit">（%）</span></label>
+          <input class="input" type="number" id="baseRate" value="1.775" min="0" max="10" step="0.001">
+        </div>
+        <div class="field" data-only="general">
+          <label class="field__label" for="generalRate">貸款利率 <span class="unit">（%）</span></label>
+          <input class="input" type="number" id="generalRate" value="2.5" min="0" max="10" step="0.001">
+        </div>
         <div class="field" data-only="youth">
           <label class="field__label" for="method">計息方式</label>
           <select class="select" id="method">
@@ -378,7 +390,7 @@
 
   var els = {};
   ['county','price','age','income','married2y','minorChild','noOwnHome','neverUsed',
-   'loanAmount','years','grace','baseRate','method',
+   'loanAmount','loanRatio','years','grace','baseRate','method',
    'generalRate','repayMethod'].forEach(function(id){ els[id] = document.getElementById(id); });
 
   function loanCapByStatus(){
@@ -391,8 +403,17 @@
     return Math.min(loanCapByStatus(), priceWan * LTV_MAX);
   }
 
+  function defaultRatioForMode(mode){
+    return mode === 'youth' ? 75 : 80; // 青安預設顯示75%，一般房貸預設顯示8成
+  }
+
   function fmtInt(n){ return Math.round(n).toLocaleString('zh-Hant-TW'); }
   function fmtWan(n){ return (Math.round(n * 10) / 10).toLocaleString('zh-Hant-TW'); }
+
+  function updateLoanAmountDisplay(loanWan, ratio){
+    els.loanAmount.value = fmtWan(loanWan);
+    document.getElementById('loanPctBadge').textContent = '(' + Math.round(ratio) + '%)';
+  }
 
   // 共用欄位驗證：回傳修正到合理範圍後的數值，並把超出範圍的訊息塞進 errors 陣列
   function checkRange(raw, label, min, max, unit, errors){
@@ -412,13 +433,14 @@
     var errors = [];
     var values = {
       price: checkRange(els.price.value, '買賣總價／鑑價', 1, 100000, '萬元', errors),
+      ratio: checkRange(els.loanRatio.value, '貸款成數', 1, 100, '%', errors),
       age: checkRange(els.age.value, '借款人年齡', 18, 99, '歲', errors),
       income: checkRange(els.income.value, '本人年所得', 0, 100000, '萬元', errors),
-      loanAmount: checkRange(els.loanAmount.value, '貸款金額', 1, 100000, '萬元', errors),
       years: checkRange(els.years.value, '貸款年限', 1, 40, '年', errors),
       grace: checkRange(els.grace.value, '寬限期', 0, 5, '年', errors),
       baseRate: checkRange(els.baseRate.value, '補貼後起始利率', 0, 10, '%', errors)
     };
+    values.loanAmount = Math.round(values.price * values.ratio / 100 * 10) / 10;
     return { errors: errors, values: values };
   }
 
@@ -426,11 +448,12 @@
     var errors = [];
     var values = {
       price: checkRange(els.price.value, '買賣總價／鑑價', 1, 100000, '萬元', errors),
-      loanAmount: checkRange(els.loanAmount.value, '貸款金額', 1, 100000, '萬元', errors),
+      ratio: checkRange(els.loanRatio.value, '貸款成數', 1, 100, '%', errors),
       years: checkRange(els.years.value, '貸款年限', 1, 40, '年', errors),
       grace: checkRange(els.grace.value, '寬限期', 0, 5, '年', errors),
       generalRate: checkRange(els.generalRate.value, '貸款利率', 0, 10, '%', errors)
     };
+    values.loanAmount = Math.round(values.price * values.ratio / 100 * 10) / 10;
     return { errors: errors, values: values };
   }
 
@@ -587,6 +610,7 @@
     var countyCat = els.county.value;
     var priceWan = v.price;
     var loanWan = v.loanAmount;
+    updateLoanAmountDisplay(loanWan, v.ratio);
     var age = v.age;
     var income = v.income;
     var years = v.years;
@@ -725,6 +749,7 @@
 
     var priceWan = v.price;
     var loanWan = v.loanAmount;
+    updateLoanAmountDisplay(loanWan, v.ratio);
     var years = v.years;
     var graceYears = Math.min(v.grace, Math.max(0, years - 1));
     var ratePct = v.generalRate;
@@ -784,6 +809,7 @@
       btn.classList.add('active');
       currentMode = btn.dataset.mode;
       document.body.setAttribute('data-calc-mode', currentMode);
+      els.loanRatio.value = defaultRatioForMode(currentMode);
       updateModeText();
       calculate();
     });
@@ -791,8 +817,13 @@
 
   document.getElementById('applyMax').addEventListener('click', function(){
     var priceWan = parseFloat(els.price.value) || 0;
-    var maxLoan = currentMode === 'youth' ? computeMaxLoan(priceWan) : priceWan * LTV_MAX;
-    els.loanAmount.value = Math.max(0, Math.round(maxLoan));
+    var ratio;
+    if(currentMode === 'youth'){
+      ratio = priceWan > 0 ? (computeMaxLoan(priceWan) / priceWan * 100) : defaultRatioForMode('youth');
+    } else {
+      ratio = LTV_MAX * 100;
+    }
+    els.loanRatio.value = Math.max(1, Math.min(100, Math.round(ratio)));
     calculate();
   });
 
@@ -805,7 +836,7 @@
     els.minorChild.checked = false;
     els.noOwnHome.checked = true;
     els.neverUsed.checked = true;
-    els.loanAmount.value = 720;
+    els.loanRatio.value = defaultRatioForMode(currentMode);
     els.years.value = 30;
     els.grace.value = 3;
     els.baseRate.value = 1.775;
